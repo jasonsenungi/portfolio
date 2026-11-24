@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jason Senungi · Portfolio</title>
+<meta name="description" content="Portfolio of Jason Senungi, HBO-ICT student and software developer, looking for an internship from February 2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a junior developer who knows where he is going: direct, warm, a little proud
+   IDEA: a survey map; his path is a magenta route that starts on the hero map and keeps running down the whole page
+   PICTURE: full-bleed hero map; every project is a map sheet with contours, a waypoint on the route and a title block
+   COLOUR and TYPE: land #fbfbf2, sea #bfe3ee, contour brown #a8551b, ink #13242e, route magenta #d6127e; night #0d1c24; Overpass
+   LAYOUT: floating pill nav over the map, the route runs in a left gutter past every sheet, contact is the last stop */
+body{--land:#fbfbf2;--land2:#f1f1e3;--sea:#cbe9f2;--sea2:#a9d7e6;--ink:#13242e;--mute:#4d5f68;--brown:#a8551b;--mag:#d6127e;--card:#ffffff;--shadow:#13242e;--wave:#8cc6d8}
+body.dark{--land:#0d1c24;--land2:#12262f;--sea:#0f2c39;--sea2:#16404f;--ink:#e9f1ee;--mute:#a3b8bf;--brown:#d08a55;--mag:#ff4fa6;--card:#132a35;--shadow:#000000;--wave:#2a6175}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--land);color:var(--ink);font:17px/1.6 Overpass,system-ui,sans-serif;overflow-x:clip;transition:background .3s,color .3s}
+h1,h2,h3{font-weight:900;line-height:1.02;text-wrap:balance;margin:0}
+h3{font-size:20px;font-weight:800}
+a{color:inherit}img{display:block;max-width:100%}
+a:focus-visible,button:focus-visible{outline:3px solid var(--mag);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border:2px solid var(--ink);border-radius:999px;text-decoration:none;font-weight:800;background:var(--card);color:var(--ink);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--ink)}
+.btn.mag{background:var(--mag);border-color:var(--mag);color:#fff}
+/* floating nav */
+.nav{position:fixed;z-index:50;top:14px;left:50%;transform:translateX(-50%);width:min(1120px,calc(100% - 24px));display:flex;align-items:center;gap:18px;padding:8px 8px 8px 20px;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(12px);border:2px solid var(--ink);border-radius:999px;box-shadow:0 6px 0 var(--shadow)}
+.logo{font-weight:900;font-size:18px;text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.logo i{width:13px;height:13px;border-radius:50%;background:var(--mag);box-shadow:0 0 0 4px color-mix(in srgb,var(--mag) 25%,transparent)}
+.nav .links{display:flex;gap:4px}
+.nav .links a{text-decoration:none;font-weight:700;padding:8px 14px;border-radius:999px}
+.nav .links a:hover,.nav .links a.on{background:var(--land2)}
+.theme{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px;border:2px solid var(--ink);border-radius:999px;background:var(--land2);color:var(--ink);font:800 14px Overpass,sans-serif;cursor:pointer}
+.theme svg{width:18px;height:18px}
+.theme:hover{background:var(--mag);border-color:var(--mag);color:#fff}
+.nav .btn{min-height:42px}
+/* hero map */
+.hero{position:relative;min-height:min(92vh,820px);border-bottom:3px solid var(--ink);overflow:hidden}
+.map{position:absolute;inset:0}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.legend{position:relative;z-index:2;max-width:440px;margin:118px 0 48px max(5vw,16px);background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:30px 30px 24px;box-shadow:10px 10px 0 var(--shadow)}
+.legend .tag{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:14px;color:#fff;background:var(--mag);padding:5px 12px;border-radius:999px;margin-bottom:16px}
+.legend h1{font-size:clamp(46px,6vw,72px);letter-spacing:-.02em}
+.legend p{color:var(--mute);margin:14px 0 22px;font-size:18px}
+.legend p b{color:var(--ink)}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.key{margin-top:22px;padding-top:16px;border-top:2px dashed color-mix(in srgb,var(--ink) 30%,transparent);display:grid;gap:6px;font-size:14px;color:var(--mute)}
+.key span{display:flex;align-items:center;gap:10px}
+.key .r{width:26px;border-top:3px dashed var(--mag)}
+.key .w{width:13px;height:13px;border-radius:50%;background:var(--card);border:3px solid var(--ink)}
+.key .s{width:13px;height:13px;background:var(--mag);transform:rotate(45deg)}
+.wp{cursor:pointer}
+/* the route down the page */
+.trail{position:relative}
+.trail::before{content:"";position:absolute;top:0;bottom:0;left:calc(max(5vw,16px) + 11px);border-left:4px dashed var(--mag);z-index:1;opacity:.9}
+.sheet{position:relative;isolation:isolate;overflow:hidden;padding:clamp(64px,8vw,120px) max(5vw,16px) clamp(64px,8vw,120px) calc(max(5vw,16px) + 60px)}
+.sheet.sea{background:var(--sea)}
+.bg{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.bg svg{width:100%;height:100%;display:block}
+.wrap{max-width:1180px;margin:0 auto}
+.stop{position:absolute;left:calc(max(5vw,16px) - 2px);margin-top:10px;width:30px;height:30px;border-radius:50%;background:var(--card);border:5px solid var(--ink);z-index:2}
+.stop.own{border-radius:4px;background:var(--mag);border-color:var(--mag);transform:rotate(45deg) scale(.86)}
+.stop.end{border-color:var(--mag);border-style:dashed}
+.kicker{display:inline-block;font-weight:800;font-size:14px;color:var(--brown);margin-bottom:10px}
+/* project sheet layout */
+.ph{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start;margin-bottom:44px}
+.ph h2{font-size:clamp(40px,6vw,72px);letter-spacing:-.02em}
+.lead{font-size:clamp(18px,1.7vw,21px);margin:18px 0 0;max-width:56ch}
+.tblock{background:var(--card);border:2px solid var(--ink);border-radius:14px;box-shadow:8px 8px 0 var(--shadow);overflow:hidden}
+.tblock .t{background:var(--ink);color:var(--land);font-weight:800;font-size:13px;padding:8px 16px;display:flex;justify-content:space-between}
+.tblock dl{margin:0;padding:6px 16px}
+.tblock dl div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid color-mix(in srgb,var(--ink) 18%,transparent);font-size:15px}
+.tblock dl div:last-child{border:0}
+.tblock dt{font-weight:800}.tblock dd{margin:0;color:var(--mute)}
+.did{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 32px;list-style:none;margin:0 0 44px;padding:0}
+.did li{padding-left:28px;position:relative}
+.did li::before{content:"";position:absolute;left:2px;top:.45em;width:12px;height:12px;background:var(--mag);transform:rotate(45deg)}
+.note{font-size:15px;color:var(--mute);margin:-24px 0 44px;padding:10px 16px;border-left:4px solid var(--brown);background:color-mix(in srgb,var(--card) 70%,transparent);border-radius:0 8px 8px 0;max-width:70ch}
+.shot{border:2px solid var(--ink);border-radius:12px;overflow:hidden;background:var(--card);cursor:zoom-in;box-shadow:7px 7px 0 var(--shadow);transition:transform .15s}
+.shot:hover{transform:translate(-2px,-2px)}
+.bar{display:flex;align-items:center;gap:7px;padding:9px 14px;border-bottom:2px solid var(--ink);background:var(--land2)}
+.bar i{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink)}
+.bar i:first-child{background:var(--mag);border-color:var(--mag)}
+.bar span{margin-left:8px;font-size:13px;color:var(--mute);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+figure{margin:0}
+figcaption{font-size:15px;color:var(--mute);margin-top:12px}
+/* snyptly */
+.feature{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(24px,4vw,48px);align-items:center;margin-bottom:48px}
+.feature h3{font-size:28px;font-weight:900}
+.detect{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:48px}
+.det{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:20px;box-shadow:6px 6px 0 var(--shadow)}
+.det svg{width:100%;height:84px;display:block;margin-bottom:14px}
+.det p{margin:6px 0 0;color:var(--mute);font-size:16px}
+.mosaic{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px;align-items:start}
+.mosaic .side{display:grid;gap:24px}
+/* gallery */
+.track{display:flex;align-items:flex-start;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 10px 16px 4px;scrollbar-width:thin}
+.track figure{flex:0 0 min(78%,600px);scroll-snap-align:start}
+.galnav{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.galnav button{width:46px;height:46px;border:2px solid var(--ink);border-radius:50%;background:var(--card);color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}
+.galnav svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.galnav button:hover{background:var(--mag);border-color:var(--mag);color:#fff}
+/* before/after, flows */
+.ba{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,48px)}
+.ba h3{margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.pill{font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;border:2px solid var(--ink)}
+.pill.m{background:var(--mag);border-color:var(--mag);color:#fff}
+.row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.row3 .shot{aspect-ratio:9/19;border-radius:18px;box-shadow:5px 5px 0 var(--shadow)}
+.row3 img{width:100%;height:100%;object-fit:cover;object-position:top}
+.flow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:20px;align-items:center;margin-bottom:48px}
+.arrow{width:84px;height:24px;display:block;overflow:visible}
+.arrow line{stroke:var(--mag);stroke-width:4;stroke-dasharray:9 7;stroke-linecap:round}
+.arrow path{fill:var(--mag)}
+.fix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:48px}
+.fix div{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:18px;box-shadow:6px 6px 0 var(--shadow)}
+.fix em{display:block;color:var(--brown);font-style:normal;font-weight:800;font-size:13px;margin-bottom:6px}
+.fix b{display:block;font-size:17px;margin-bottom:6px}
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,6vw,80px)}
+.about h2{font-size:clamp(40px,6vw,72px)}
+.edu{list-style:none;margin:28px 0 0;padding:0;border-left:4px dashed var(--brown)}
+.edu li{position:relative;padding:0 0 26px 26px}
+.edu li::before{content:"";position:absolute;left:-12px;top:3px;width:12px;height:12px;border-radius:50%;background:var(--card);border:4px solid var(--ink)}
+.edu b{display:block;font-size:18px}
+.edu span{color:var(--mute);font-size:16px}
+/* contact */
+.contact .card{background:var(--card);border:2px solid var(--ink);border-radius:20px;box-shadow:12px 12px 0 var(--shadow);padding:clamp(28px,5vw,64px);text-align:center}
+.contact h2{font-size:clamp(42px,7vw,84px)}
+.contact p{font-size:19px;max-width:52ch;margin:18px auto 30px;color:var(--mute)}
+.contact .cta{justify-content:center}
+.dest{width:min(520px,100%);height:auto;display:block;margin:0 auto 18px;overflow:visible}
+.dest .rt{fill:none;stroke:var(--mag);stroke-width:4;stroke-dasharray:10 8;stroke-linecap:round}
+.dest .st{fill:var(--card);stroke:var(--ink);stroke-width:4}
+.dest .ow{fill:var(--mag)}
+.dest .en{fill:var(--card);stroke:var(--mag);stroke-width:4;stroke-dasharray:5 4}
+.dest text{font:800 15px Overpass,sans-serif;fill:var(--mag)}
+footer{padding:26px max(5vw,16px);border-top:3px solid var(--ink);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:15px;color:var(--mute)}
+dialog{border:0;padding:0;background:transparent;max-width:min(1400px,94vw)}
+dialog::backdrop{background:#0d1c24e6}
+dialog img{max-height:84vh;width:auto;margin:0 auto;border-radius:10px}
+dialog p{color:#fff;text-align:center;margin:12px 0 0}
+dialog button{position:fixed;top:16px;right:16px;width:48px;height:48px;border-radius:50%;border:0;background:var(--mag);color:#fff;font-size:24px;cursor:pointer}
+.route-anim{animation:drawin 2.2s ease-out both}
+@keyframes drawin{from{opacity:0;stroke-dashoffset:500}to{opacity:1;stroke-dashoffset:0}}
+.wp.anim{animation:pop .5s both}@keyframes pop{from{opacity:0}to{opacity:1}}
+@media(max-width:980px){.ph,.feature,.ba,.about,.mosaic{grid-template-columns:minmax(0,1fr)}.detect,.fix{grid-template-columns:minmax(0,1fr)}.nav .links{display:none}}
+@media(max-width:760px){.hero{min-height:0;display:flex;flex-direction:column}.legend{order:-1;margin:96px 14px 24px;max-width:none;box-shadow:6px 6px 0 var(--shadow)}.map{position:relative;height:640px;inset:auto;border-top:3px solid var(--ink)}.did{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.sheet{padding-left:56px;padding-right:16px}.trail::before{left:26px}.stop{left:15px;width:26px;height:26px;border-width:4px}.flow{grid-template-columns:minmax(0,1fr)}.arrow{transform:rotate(90deg);justify-self:center;margin:30px 0}.track figure{flex-basis:90%}.theme span{display:none}.nav{gap:8px;padding-left:14px}.logo{font-size:16px}.tblock dl div{grid-template-columns:minmax(0,1fr);gap:0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.shot{transition:none}.route-anim,.wp.anim{animation:none}}
+
+/* route rail */
+.rail{position:fixed;left:16px;width:150px;top:50%;transform:translateY(-50%);z-index:40;display:none;flex-direction:column;gap:4px;padding:12px 10px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);border:2px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--shadow)}
+.rail .rt{font-size:11px;font-weight:900;color:var(--brown);padding:0 6px 6px}
+.rail::before{content:"";position:absolute;left:21px;top:40px;bottom:24px;border-left:3px dashed var(--mag)}
+.rail a{position:relative;display:flex;align-items:center;gap:10px;text-decoration:none;font-size:13px;font-weight:800;color:var(--mute);padding:5px 8px 5px 4px;border-radius:999px}
+.rail i{position:relative;width:16px;height:16px;border-radius:50%;background:var(--card);border:3px solid var(--ink);flex:none;transition:transform .2s,background .2s}
+.rail i.own{border-radius:3px;transform:rotate(45deg) scale(.85)}
+.rail i.end{border-style:dashed;border-color:var(--mag)}
+.rail a:hover{color:var(--ink);background:var(--land2)}
+.rail a.on{color:#fff;background:var(--mag)}
+.rail a.on i{background:#fff;border-color:#fff}
+@media(min-width:1280px){.rail{display:flex}.trail::before{left:189px}.sheet{padding-left:250px}.stop{left:176px}}
+</style>
+</head>
+<body>
+<script>
+try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.body.classList.add('dark')}catch(_){if(matchMedia('(prefers-color-scheme: dark)').matches)document.body.classList.add('dark')}
+</script>
+<nav class="nav" aria-label="Main">
+  <a class="logo" href="#top"><i></i>Jason Senungi</a>
+  <div class="links"><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></div>
+  <button class="theme" id="theme" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" id="ticon"></svg><span id="tlabel">Dark</span></button>
+  <a class="btn mag" href="https://github.com/jasonsenungi" target="_blank" rel="noopener">GitHub</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="map" id="map" role="img" aria-label="Map of my route: MBO at Talland College, internships at XML Hosting and Learn and Earn, HBO-ICT at the HvA with Dokkie and the LucaStars Webshop, my own project Snyptly, and next stop: an internship from February 2027."><svg id="mapsvg" preserveAspectRatio="xMidYMid slice"></svg></div>
+  <div class="legend">
+    <div class="tag">Looking for an internship · Feb 2027</div>
+    <h1>Jason Senungi</h1>
+    <p><b>HBO-ICT student and software developer.</b> I build web apps, webshops and mobile apps, and I’m looking for a team to grow with.</p>
+    <div class="cta"><a class="btn mag" href="#work">See my work</a><a class="btn" href="#contact">Get in touch</a></div>
+    <div class="key"><span><i class="r"></i>My route so far</span><span><i class="w"></i>A stop: click to jump there</span><span><i class="s"></i>My own project</span></div>
+  </div>
+</header>
+
+<aside class="rail" aria-label="Where you are on this page">
+  <div class="rt">Route</div>
+  <a href="#top" data-s="top"><i></i><span>Start</span></a>
+  <a href="#snyptly" data-s="snyptly"><i class="own"></i><span>Snyptly</span></a>
+  <a href="#learn" data-s="learn"><i></i><span>Learn &amp; Earn</span></a>
+  <a href="#xml" data-s="xml"><i></i><span>XML Hosting</span></a>
+  <a href="#webshop" data-s="webshop"><i></i><span>Webshop</span></a>
+  <a href="#dokkie" data-s="dokkie"><i></i><span>Dokkie</span></a>
+  <a href="#about" data-s="about"><i></i><span>About</span></a>
+  <a href="#contact" data-s="contact"><i class="end"></i><span>Contact</span></a>
+</aside>
+<div class="trail">
+<main id="work">
+
+<section class="sheet" id="snyptly" data-bg="land"><div class="bg"></div><i class="stop own" aria-hidden="true"></i><div class="wrap">
+  <div class="ph">
+    <div>
+      <span class="kicker">Own project · 2025 – now</span>
+      <h2>Snyptly</h2>
+      <p class="lead">A web app that turns long videos from YouTube, Twitch and Kick into short clips ready to post. Paste a link, Snyptly finds the best moments, and you trim, crop to 9:16, add captions and download.</p>
+    </div>
+    <div class="tblock"><div class="t"><span>Snyptly</span><span>sheet 1</span></div><dl>
+      <div><dt>Type</dt><dd>Own project</dd></div>
+      <div><dt>Role</dt><dd>Built every feature; a friend helped improve the code structure</dd></div>
+      <div><dt>Built with</dt><dd>Next.js · TypeScript · Express · SQLite · FFmpeg · yt-dlp</dd></div>
+      <div><dt>Code</dt><dd>Private GitHub repo, available on request</dd></div>
+    </dl></div>
+  </div>
+  <ul class="did">
+    <li>Highlight detection, clip editor, captions and downloads</li>
+    <li>Fetches videos with yt-dlp, then cuts, crops and burns in captions with FFmpeg, several clips at once</li>
+    <li>Accounts with Google sign-in, password reset and an admin panel</li>
+    <li>Migrated the app from Vite + Web Components to Next.js</li>
+  </ul>
+  <div class="feature">
+    <figure><div class="shot" data-c="Demo: paste a link, find the highlights, open a clip"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>snyptly · demo</span></div><img src="img/snyptly-demo.gif" alt="Demo of Snyptly finding highlights in a YouTube video" loading="lazy"></div></figure>
+    <div>
+      <h3>How it finds the best moments</h3>
+      <p class="lead" style="font-size:17px">The clip detection doesn’t use an AI model. Snyptly scores a signal for each source itself, starts each clip just before the peak and snaps it to sentence boundaries, so clips don’t cut off mid-word.</p>
+      <p class="note" style="margin:18px 0 0">I did use AI tools as a coding assistant while building the app. The detection logic itself is plain code.</p>
+    </div>
+  </div>
+  <div class="detect">
+    <div class="det"><svg id="sig1" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true"></svg><h3>YouTube: emotion in the transcript</h3><p>Every line gets a sentiment score, with extra points for words like “insane” or “no way”.</p></div>
+    <div class="det"><svg id="sig2" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true"></svg><h3>Twitch: chat spikes</h3><p>It looks for moments when the chat suddenly gets much busier than usual.</p></div>
+    <div class="det"><svg id="sig3" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true"></svg><h3>Kick and uploads: loudness</h3><p>FFmpeg measures the audio, and Snyptly picks the loudest peaks above the normal level.</p></div>
+  </div>
+  <div class="mosaic">
+    <figure><div class="shot" data-c="“5 moments worth posting”: the highlights it found"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>Highlights found</span></div><img src="img/results.webp" alt="The highlights Snyptly found" loading="lazy"></div></figure>
+    <div class="side">
+      <figure><div class="shot" data-c="The homepage"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>Homepage</span></div><img src="img/home.webp" alt="The Snyptly homepage" loading="lazy"></div></figure>
+      <figure><div class="shot" data-c="The clip editor with trimming and export options"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>Clip editor</span></div><img src="img/editor.webp" alt="The clip editor" loading="lazy"></div></figure>
+    </div>
+  </div>
+</div></section>
+
+<section class="sheet sea" id="learn" data-bg="sea"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap">
+  <div class="ph">
+    <div>
+      <span class="kicker">MBO internship · 2024 – 2025</span>
+      <h2>An Android app for older adults</h2>
+      <p class="lead">An app that helps older adults stay mentally and physically active, with games, exercises, a humour section and recipes they can add themselves.</p>
+    </div>
+    <div class="tblock"><div class="t"><span>Learn &amp; Earn</span><span>sheet 2</span></div><dl>
+      <div><dt>Type</dt><dd>MBO internship (Software Developer)</dd></div>
+      <div><dt>Company</dt><dd>Learn &amp; Earn</dd></div>
+      <div><dt>Built with</dt><dd>Kotlin · Android Studio · Firebase</dd></div>
+      <div><dt>Result</dt><dd>A full redesign based on user feedback</dd></div>
+    </dl></div>
+  </div>
+  <ul class="did">
+    <li>Designed it with a mind map and wireframes, and planned it with my supervisors</li>
+    <li>Built the Games, Activities and Recipes sections in Kotlin</li>
+    <li>Added Google sign-in with Firebase</li>
+    <li>Tested it in the Android emulator and redesigned the whole interface</li>
+  </ul>
+  <div class="ba">
+    <div><h3>First version <span class="pill">before</span></h3><div class="row3" data-p="old_activities|First version: activities,old_wordsearch|First version: word search,old_games|First version: games"></div></div>
+    <div><h3>Calmer and clearer <span class="pill m">after feedback</span></h3><div class="row3" data-p="new_login|New version: sign in,new_home|New version: home screen,new_wordsearch|New version: word search"></div></div>
+  </div>
+</div></section>
+
+<section class="sheet" id="xml" data-bg="land"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap">
+  <div class="ph">
+    <div>
+      <span class="kicker">MBO internship · Feb – Jul 2024</span>
+      <h2>Webshops and websites for real clients</h2>
+      <p class="lead">At XML Hosting in Amsterdam I worked on client projects, from a complete Shopify webshop to PHP admin panels for travel websites.</p>
+    </div>
+    <div class="tblock"><div class="t"><span>XML Hosting</span><span>sheet 3</span></div><dl>
+      <div><dt>Type</dt><dd>MBO internship (web development)</dd></div>
+      <div><dt>Where</dt><dd>XML Hosting, Zuidas, Amsterdam</dd></div>
+      <div><dt>Built with</dt><dd>Shopify · Liquid · PHP · MySQL · Bootstrap · JavaScript</dd></div>
+      <div><dt>Bonus</dt><dd>Wrote an English manual for colleagues</dd></div>
+    </dl></div>
+  </div>
+  <ul class="did">
+    <li>Set up and delivered a complete Shopify webshop for a client on my own</li>
+    <li>Customised and upgraded themes to Dawn 12 with Liquid and CSS</li>
+    <li>Improved the admin panels of travel websites with PHP and MySQL</li>
+    <li>Built responsive websites with Bootstrap, HTML, CSS and JavaScript</li>
+  </ul>
+  <div class="gal" data-g="xml"></div>
+</div></section>
+
+<section class="sheet sea" id="webshop" data-bg="sea"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap">
+  <div class="ph">
+    <div>
+      <span class="kicker">HBO team project · HBO-ICT</span>
+      <h2>LucaStars Webshop</h2>
+      <p class="lead">A working webshop for games, built as a team with a Product Owner acting as the client. My focus was the shopping cart, from research to a working page.</p>
+    </div>
+    <div class="tblock"><div class="t"><span>LucaStars Webshop</span><span>sheet 4</span></div><dl>
+      <div><dt>Type</dt><dd>HBO team project</dd></div>
+      <div><dt>My part</dt><dd>The shopping cart, from design to code</dd></div>
+      <div><dt>Built with</dt><dd>TypeScript (OOP) · MySQL</dd></div>
+      <div><dt>Way of work</dt><dd>Scrum, with a Product Owner as client</dd></div>
+    </dl></div>
+  </div>
+  <ul class="did">
+    <li>Researched how Steam, GOG, Amazon and Zalando handle their carts</li>
+    <li>Sketches and a class diagram: CartController → CartService → DatabaseService</li>
+    <li>A confirmation before removing a game, so nobody loses one by accident</li>
+    <li>A message with the updated total after removing</li>
+  </ul>
+  <div class="flow">
+    <figure><div class="shot" data-c="My sketch of the cart"><img src="img/winkelwagen-ontwerp.webp" alt="Sketch of the shopping cart" loading="lazy"></div><figcaption>My sketch</figcaption></figure>
+    <svg class="arrow" viewBox="0 0 84 24" aria-hidden="true"><line x1="3" y1="12" x2="62" y2="12"/><path d="M60,3 L81,12 L60,21 Z"/></svg>
+    <figure><div class="shot" data-c="The working cart"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>Shopping cart</span></div><img src="img/winkelwagen-pagina.webp" alt="The working shopping cart page" loading="lazy"></div><figcaption>The working cart</figcaption></figure>
+  </div>
+  <div class="gal" data-g="webshop"></div>
+</div></section>
+
+<section class="sheet" id="dokkie" data-bg="land"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap">
+  <div class="ph">
+    <div>
+      <span class="kicker">HBO duo project · HBO-ICT</span>
+      <h2>Dokkie</h2>
+      <p class="lead">A web app for splitting group expenses fairly. Create an event, add participants with their share, and keep track of who has paid what.</p>
+    </div>
+    <div class="tblock"><div class="t"><span>Dokkie</span><span>sheet 5</span></div><dl>
+      <div><dt>Type</dt><dd>HBO duo project</dd></div>
+      <div><dt>My part</dt><dd>Full stack, together with a teammate</dd></div>
+      <div><dt>Built with</dt><dd>TypeScript (OOP) · Vite · database</dd></div>
+      <div><dt>Tested</dt><dd>Guerrilla tests with fellow students</dd></div>
+    </dl></div>
+  </div>
+  <ul class="did">
+    <li>Built the whole app with a teammate, front end and back end</li>
+    <li>Add, edit and delete events, participants and payments</li>
+    <li>Tested our wireframes with guerrilla tests</li>
+    <li>Improved the design based on what testers told us</li>
+  </ul>
+  <div class="flow">
+    <figure><div class="shot" data-c="Wireframe, first version"><img src="img/deelnemer-wireframe-v1.webp" alt="First wireframe" loading="lazy"></div><figcaption>First wireframe</figcaption></figure>
+    <svg class="arrow" viewBox="0 0 84 24" aria-hidden="true"><line x1="3" y1="12" x2="62" y2="12"/><path d="M60,3 L81,12 L60,21 Z"/></svg>
+    <figure><div class="shot" data-c="Wireframe after the guerrilla test"><img src="img/deelnemer-wireframe-v2-na-test.webp" alt="Wireframe after testing" loading="lazy"></div><figcaption>After the guerrilla test</figcaption></figure>
+  </div>
+  <div class="fix">
+    <div><em>Testers asked</em><b>“Is the share an amount or a percentage?”</b>The field is now called “Share in €”.</div>
+    <div><em>Testers asked</em><b>“Has this person paid yet?”</b>We added a “Paid?” checkbox.</div>
+    <div><em>Testers asked</em><b>“Is deleting permanent?”</b>We added a confirmation step.</div>
+  </div>
+  <div class="gal" data-g="dokkie"></div>
+</div></section>
+</main>
+
+<section class="sheet sea" id="about" data-bg="sea"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap about">
+  <div>
+    <span class="kicker">The traveller</span>
+    <h2>About me</h2>
+    <p class="lead">I started as a Software Developer at MBO and I’m now studying HBO-ICT. I like building software people actually use, and I learn the most by building, testing and acting on feedback.</p>
+    <ul class="edu">
+      <li><b>HBO-ICT, Amsterdam University of Applied Sciences (HvA)</b><span>2025 – now · first-year diploma (propedeuse) completed</span></li>
+      <li><b>MBO level 4, Software Developer</b><span>Talland College · diploma · internships at XML Hosting and Learn &amp; Earn</span></li>
+      <li><b>VMBO-TL</b><span>Diploma</span></li>
+    </ul>
+  </div>
+  <div>
+    <div class="tblock" style="margin-top:8px"><div class="t"><span>What I’ve worked with</span><span>legend</span></div><dl>
+      <div><dt>Languages</dt><dd>TypeScript, JavaScript, PHP, SQL, HTML, CSS, Kotlin</dd></div>
+      <div><dt>Frameworks</dt><dd>Next.js, Express, Bootstrap, Shopify (Liquid), Firebase</dd></div>
+      <div><dt>Databases</dt><dd>MySQL, SQLite</dd></div>
+      <div><dt>Tools</dt><dd>Git, VS Code, Android Studio, FFmpeg</dd></div>
+      <div><dt>Ways of work</dt><dd>Scrum, object-oriented programming, user testing</dd></div>
+      <div><dt>I speak</dt><dd>Dutch, English</dd></div>
+    </dl></div>
+  </div>
+</div></section>
+
+<section class="sheet contact" id="contact" data-bg="land"><div class="bg"></div><i class="stop end" aria-hidden="true"></i><div class="wrap"><div class="card">
+  <svg class="dest" viewBox="0 0 520 90" aria-hidden="true"><path class="rt" d="M10,70 Q120,10 220,50 T420,40"/><circle class="st" cx="10" cy="70" r="8"/><rect class="ow" x="200" y="36" width="16" height="16" transform="rotate(45 208 44)"/><circle class="en" cx="440" cy="40" r="17"/><text x="440" y="84" text-anchor="middle">your team</text></svg>
+  <h2>Next stop: your team?</h2>
+  <p>I’m looking for an internship from February 2027. Want to know more, or see the Snyptly code? Send me a message.</p>
+  <div class="cta">
+    <a class="btn mag" href="mailto:jsenungi@gmail.com">jsenungi@gmail.com</a>
+    <a class="btn" href="https://github.com/jasonsenungi" target="_blank" rel="noopener">github.com/jasonsenungi</a>
+  </div>
+</div></div></section>
+</div>
+
+<footer><span>© 2026 Jason Senungi</span><span>Built with HTML, CSS and JavaScript</span></footer>
+
+<dialog id="zoom"><button type="button" aria-label="Close">×</button><img alt=""><p></p></dialog>
+
+<script>
+{
+const body=document.body;
+const css=n=>getComputedStyle(body).getPropertyValue(n).trim()||'#000';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function blob(cx,cy,r,seed,k=1,sx=1.35){let d='';for(let i=0;i<=64;i++){const a=i/64*Math.PI*2;const rr=r*(1+.18*Math.sin(3*a+seed)*k+.09*Math.sin(5*a+seed*2)+.05*Math.sin(9*a+seed*3));d+=(i?'L':'M')+(cx+Math.cos(a)*rr*sx).toFixed(1)+','+(cy+Math.sin(a)*rr).toFixed(1)}return d+'Z'}
+
+/* ---------- hero map ---------- */
+const stops=[
+ {t:'Talland College',s:'MBO Software Developer',w:[.46,.82],n:[.14,.06],h:'#about'},
+ {t:'XML Hosting',s:'Internship · 2024',w:[.53,.56],n:[.34,.18],h:'#xml'},
+ {t:'Learn & Earn',s:'Internship · 2024–25',w:[.62,.80],n:[.14,.30],h:'#learn'},
+ {t:'HvA · HBO-ICT',s:'2025 – now',w:[.69,.50],n:[.34,.42],h:'#about'},
+ {t:'Dokkie',s:'Duo project',w:[.61,.26],n:[.14,.54],h:'#dokkie'},
+ {t:'LucaStars Webshop',s:'Team project',w:[.75,.19],n:[.34,.66],h:'#webshop'},
+ {t:'Snyptly',s:'Own project',w:[.85,.43],n:[.14,.79],h:'#snyptly',own:true},
+ {t:'Next stop: your team',s:'Feb 2027',w:[.90,.76],n:[.34,.93],h:'#contact',next:true}];
+const svg=document.getElementById('mapsvg'),box=document.getElementById('map');
+let drawn=false;
+function drawMap(){
+  const W=box.clientWidth,H=box.clientHeight;if(!W||!H)return;
+  const narrow=W<760,land=css('--land'),sea=css('--sea'),brown=css('--brown'),ink=css('--ink'),mag=css('--mag'),card=css('--card'),wave=css('--wave');
+  let o=`<rect width="${W}" height="${H}" fill="${land}"/>`;
+  let coast=`M${W},0 `;for(let i=0;i<=40;i++){const y=i/40*H;const x=W*(narrow?.86:.95)-Math.sin(i*.55)*W*.025-Math.sin(i*1.7)*W*.01-(narrow?0:(i/40)*W*.06);coast+=`L${x.toFixed(1)},${y.toFixed(1)} `}
+  coast+=`L${W},${H} Z`;
+  o+=`<path d="${coast}" fill="${sea}"/>`;
+  for(let k=1;k<=3;k++)o+=`<path d="${coast}" fill="none" stroke="${wave}" stroke-width="1.5" transform="translate(${-k*10},0)" opacity="${.8-k*.2}"/>`;
+  const hills=narrow?[[.75,.2,.16,1],[.7,.62,.2,4],[.2,.9,.14,7]]:[[.32,.22,.15,1],[.63,.38,.17,4],[.78,.88,.12,7],[.15,.8,.13,9],[.9,.12,.08,11]];
+  for(const [hx,hy,hr,sd] of hills)for(let r=1;r<=7;r++)o+=`<path d="${blob(hx*W,hy*H,hr*Math.min(W,H*1.6)*r/7,sd+r*.3,1-r*.05)}" fill="none" stroke="${brown}" stroke-width="${r===7?1.6:1}" opacity="${r===7?.55:.33}"/>`;
+  for(let i=1;i<10;i++){const x=W*i/10;o+=`<line x1="${x}" x2="${x}" y1="${H-10}" y2="${H}" stroke="${ink}" opacity=".4"/>`}
+  const P=stops.map(s=>{const [x,y]=narrow?s.n:s.w;return[x*W,y*H]});
+  let d=`M${P[0][0]},${P[0][1]}`;for(let i=1;i<P.length;i++){const [x0,y0]=P[i-1],[x1,y1]=P[i];const mx=(x0+x1)/2+(i%2?-1:1)*Math.min(W,H)*.04;d+=` Q${mx.toFixed(1)},${((y0+y1)/2).toFixed(1)} ${x1.toFixed(1)},${y1.toFixed(1)}`}
+  o+=`<path d="${d}" fill="none" stroke="${land}" stroke-width="10" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${mag}" stroke-width="4" stroke-dasharray="10 8" stroke-linecap="round" class="${drawn?'':'route-anim'}"/>`;
+  const fs=narrow?14:15;
+  stops.forEach((s,i)=>{const [x,y]=P[i];
+    const mark=s.own?`<rect x="${x-11}" y="${y-11}" width="22" height="22" fill="${mag}" transform="rotate(45 ${x} ${y})"/>`:s.next?`<circle cx="${x}" cy="${y}" r="12" fill="${card}" stroke="${mag}" stroke-width="4" stroke-dasharray="4 3"/>`:`<circle cx="${x}" cy="${y}" r="10" fill="${card}" stroke="${ink}" stroke-width="4"/>`;
+    const left=!narrow&&x>W*.8,tx=left?x-20:x+20,anc=left?'end':'start';
+    o+=`<a class="wp${drawn?'':' anim'}" style="animation-delay:${(i*.22).toFixed(2)}s" href="${s.h}" aria-label="${esc(s.t)}">${mark}<text x="${tx}" y="${y-2}" text-anchor="${anc}" font-family="Overpass,sans-serif" font-weight="800" font-size="${fs}" fill="${ink}" stroke="${land}" stroke-width="5" paint-order="stroke">${esc(s.t)}</text><text x="${tx}" y="${y+fs+1}" text-anchor="${anc}" font-family="Overpass,sans-serif" font-size="${fs-2}" fill="${s.next||s.own?mag:brown}" stroke="${land}" stroke-width="4" paint-order="stroke">${esc(s.s)}</text></a>`});
+  const cx=narrow?W-34:W-50,cy=narrow?H-40:H-58;
+  o+=`<g transform="translate(${cx},${cy})"><circle r="21" fill="${card}" stroke="${ink}" stroke-width="2"/><path d="M0,-15 L5,0 L0,15 L-5,0Z" fill="${ink}"/><path d="M0,-15 L5,0 L-5,0Z" fill="${mag}"/><text y="-27" text-anchor="middle" font-family="Overpass" font-weight="800" font-size="12" fill="${ink}">N</text></g>`;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=o;
+  if(!drawn)setTimeout(()=>{drawn=true},2500);
+}
+
+/* ---------- map backgrounds in every sheet ---------- */
+function drawBgs(){
+  const brown=css('--brown'),wave=css('--wave');
+  document.querySelectorAll('.sheet').forEach((s,idx)=>{
+    const bg=s.querySelector(':scope>.bg');const W=s.clientWidth,H=s.clientHeight;if(!W||!H)return;
+    let o='';
+    if(s.dataset.bg==='sea'){
+      for(let y=30;y<H;y+=46){let d=`M0,${y}`;for(let x=0;x<=W;x+=40)d+=` Q${x+20},${y+(((x/40)+idx)%2?7:-7)} ${x+40},${y}`;o+=`<path d="${d}" fill="none" stroke="${wave}" stroke-width="1.4" opacity=".55"/>`}
+    }else{
+      const hills=[[W*.92,H*.12,Math.min(W,H)*.32,idx*2.1+1],[W*.08,H*.86,Math.min(W,H)*.28,idx*1.7+4],[W*.6,H*.55,Math.min(W,H)*.22,idx*1.3+7]];
+      for(const [hx,hy,hr,sd] of hills)for(let r=1;r<=8;r++)o+=`<path d="${blob(hx,hy,hr*r/8,sd+r*.25,1-r*.05,1.25)}" fill="none" stroke="${brown}" stroke-width="${r===8?1.5:1}" opacity="${r===8?.32:.2}"/>`;
+    }
+    bg.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${o}</svg>`;
+  });
+}
+
+/* ---------- Snyptly signal sketches ---------- */
+function drawSigs(){
+  const mag=css('--mag'),ink=css('--ink');
+  document.getElementById('sig1').innerHTML=`<polyline fill="none" stroke="${ink}" stroke-width="2.5" opacity=".7" points="0,64 30,60 60,62 90,52 120,55 150,40 175,30 195,12 215,22 240,48 270,58 300,60"/><circle cx="195" cy="12" r="7" fill="${mag}"/>`;
+  let b='';for(let i=0;i<30;i++){const pk=i>=18&&i<=21;const h=pk?[52,74,64,38][i-18]:10+((i*37)%17);b+=`<rect x="${i*10+1}" y="${84-h}" width="7" height="${h}" rx="1" fill="${pk?mag:ink}" opacity="${pk?1:.45}"/>`}
+  document.getElementById('sig2').innerHTML=b;
+  let w='';for(let i=0;i<75;i++){const x=i*4,ld=i>44&&i<52,h=ld?28+((i*7)%11):((8+((i*53)%13))/2+2);w+=`<line x1="${x}" x2="${x}" y1="${42-h}" y2="${42+h}" stroke="${ld?mag:ink}" stroke-width="2.4" stroke-linecap="round" opacity="${ld?1:.45}"/>`}
+  document.getElementById('sig3').innerHTML=w+`<line x1="0" x2="300" y1="24" y2="24" stroke="${ink}" stroke-dasharray="4 4" opacity=".4"/>`;
+}
+function redrawAll(){drawMap();drawBgs();drawSigs()}
+
+/* ---------- theme toggle ---------- */
+const tb=document.getElementById('theme'),ticon=document.getElementById('ticon'),tlabel=document.getElementById('tlabel');
+const MOON='<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/>';
+const SUN='<circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
+function syncTheme(){const d=body.classList.contains('dark');ticon.innerHTML=d?SUN:MOON;tlabel.textContent=d?'Light':'Dark';tb.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode')}
+tb.addEventListener('click',()=>{body.classList.toggle('dark');try{localStorage.setItem('jsTheme',body.classList.contains('dark')?'dark':'light')}catch(_){}syncTheme();redrawAll()});
+syncTheme();
+
+/* ---------- galleries ---------- */
+const G={
+ xml:[['shopify-theme-editor','Customising a Shopify theme'],['shopify-productpagina','A product page in the webshop'],['product-listing-varianten','Setting up a product with variants'],['vakantiewebsite-spanjeparadores','Travel website SpanjeParadores.nl'],['php-adminpaneel-pagina-overzicht','The PHP admin panel']],
+ webshop:[['winkelwagen-verwijderen-bevestigen','A confirmation before removing a game'],['winkelwagen-item-verwijderd','A message with the updated total'],['verwijderen-ontwerp','My sketch of removing an item'],['webshop-homepage','The homepage (built by the team)'],['webshop-browse','Browsing games (built by the team)']],
+ dokkie:[['1-dokkie-homepage','The homepage'],['4-evenement-detail','An event with participants, expenses and payments'],['6-deelnemers-overzicht','Participants with their share and whether they’ve paid'],['8-betalingen-overzicht','The payments overview']]};
+document.querySelectorAll('.gal').forEach(g=>{
+  g.innerHTML=`<div class="track" tabindex="0" aria-label="Screenshots">${G[g.dataset.g].map(([f,c])=>`<figure><div class="shot" data-c="${esc(c)}"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(c)}</span></div><img src="img/${f}.webp" alt="${esc(c)}" loading="lazy"></div><figcaption>${esc(c)}</figcaption></figure>`).join('')}</div><div class="galnav"><button type="button" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><button type="button" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>`;
+  const tr=g.querySelector('.track'),[p,n]=g.querySelectorAll('.galnav button');
+  const step=d=>tr.scrollBy({left:d*tr.clientWidth*.8,behavior:'smooth'});
+  p.onclick=()=>step(-1);n.onclick=()=>step(1);
+  tr.addEventListener('keydown',e=>{if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1)});
+});
+document.querySelectorAll('.row3').forEach(r=>{r.innerHTML=r.dataset.p.split(',').map(x=>{const[f,c]=x.split('|');return `<figure><div class="shot" data-c="${esc(c)}"><img src="img/${f}.webp" alt="${esc(c)}" loading="lazy"></div></figure>`}).join('')});
+
+/* ---------- nav highlight ---------- */
+const navLinks=[...document.querySelectorAll('.nav .links a')];
+let tick=false;
+function navUpdate(){tick=false;const line=innerHeight*.35;let cur='';
+  for(const id of ['work','about','contact']){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=line)cur=id}
+  if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)cur='contact';
+  navLinks.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur))}
+addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(navUpdate)}},{passive:true});navUpdate();
+
+
+/* ---------- route rail ---------- */
+const rail=[...document.querySelectorAll('.rail a')];
+const railSecs=rail.map(a=>document.getElementById(a.dataset.s)).filter(Boolean);
+function railUpdate(){const line=innerHeight*.4;let cur='top';
+  for(const t of railSecs){if(t.getBoundingClientRect().top<=line)cur=t.id}
+  if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)cur='contact';
+  rail.forEach(a=>a.classList.toggle('on',a.dataset.s===cur))}
+addEventListener('scroll',()=>requestAnimationFrame(railUpdate),{passive:true});addEventListener('resize',railUpdate);railUpdate();
+/* ---------- zoom ---------- */
+const dlg=document.getElementById('zoom'),zi=dlg.querySelector('img'),zp=dlg.querySelector('p');
+document.addEventListener('click',e=>{const s=e.target.closest('.shot');if(!s)return;const im=s.querySelector('img');zi.src=im.src;zi.alt=im.alt;zp.textContent=s.dataset.c||im.alt;try{dlg.showModal()}catch(_){}});
+dlg.querySelector('button').onclick=()=>dlg.close();
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+
+const ro=new ResizeObserver(()=>{drawMap();drawBgs()});ro.observe(box);document.querySelectorAll('.sheet').forEach(s=>ro.observe(s));
+drawSigs();
+}
+</script>
+</body>
+</html>
