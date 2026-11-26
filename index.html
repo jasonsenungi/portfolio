@@ -8,177 +8,83 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800;900&display=swap" rel="stylesheet">
-<style>
-/* VOICE: a junior developer who knows where he is going: direct, warm, a little proud
-   IDEA: a survey map; his path is a magenta route that starts on the hero map and keeps running down the whole page
-   PICTURE: full-bleed hero map; every project is a map sheet with contours, a waypoint on the route and a title block
-   COLOUR and TYPE: land #fbfbf2, sea #bfe3ee, contour brown #a8551b, ink #13242e, route magenta #d6127e; night #0d1c24; Overpass
-   LAYOUT: floating pill nav over the map, the route runs in a left gutter past every sheet, contact is the last stop */
-body{--land:#fbfbf2;--land2:#f1f1e3;--sea:#cbe9f2;--sea2:#a9d7e6;--ink:#13242e;--mute:#4d5f68;--brown:#a8551b;--mag:#d6127e;--card:#ffffff;--shadow:#13242e;--wave:#8cc6d8}
-body.dark{--land:#0d1c24;--land2:#12262f;--sea:#0f2c39;--sea2:#16404f;--ink:#e9f1ee;--mute:#a3b8bf;--brown:#d08a55;--mag:#ff4fa6;--card:#132a35;--shadow:#000000;--wave:#2a6175}
-*{box-sizing:border-box;min-width:0}
-html{scroll-behavior:smooth;scroll-padding-top:96px}
-body{margin:0;background:var(--land);color:var(--ink);font:17px/1.6 Overpass,system-ui,sans-serif;overflow-x:clip;transition:background .3s,color .3s}
-h1,h2,h3{font-weight:900;line-height:1.02;text-wrap:balance;margin:0}
-h3{font-size:20px;font-weight:800}
-a{color:inherit}img{display:block;max-width:100%}
-a:focus-visible,button:focus-visible{outline:3px solid var(--mag);outline-offset:3px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border:2px solid var(--ink);border-radius:999px;text-decoration:none;font-weight:800;background:var(--card);color:var(--ink);transition:transform .15s,box-shadow .15s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--ink)}
-.btn.mag{background:var(--mag);border-color:var(--mag);color:#fff}
-/* floating nav */
-.nav{position:fixed;z-index:50;top:14px;left:50%;transform:translateX(-50%);width:min(1120px,calc(100% - 24px));display:flex;align-items:center;gap:18px;padding:8px 8px 8px 20px;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(12px);border:2px solid var(--ink);border-radius:999px;box-shadow:0 6px 0 var(--shadow)}
-.logo{font-weight:900;font-size:18px;text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:10px;white-space:nowrap}
-.logo i{width:13px;height:13px;border-radius:50%;background:var(--mag);box-shadow:0 0 0 4px color-mix(in srgb,var(--mag) 25%,transparent)}
-.nav .links{display:flex;gap:4px}
-.nav .links a{text-decoration:none;font-weight:700;padding:8px 14px;border-radius:999px}
-.nav .links a:hover,.nav .links a.on{background:var(--land2)}
-.theme{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px;border:2px solid var(--ink);border-radius:999px;background:var(--land2);color:var(--ink);font:800 14px Overpass,sans-serif;cursor:pointer}
-.theme svg{width:18px;height:18px}
-.theme:hover{background:var(--mag);border-color:var(--mag);color:#fff}
-.nav .btn{min-height:42px}
-/* hero map */
-.hero{position:relative;min-height:min(92vh,820px);border-bottom:3px solid var(--ink);overflow:hidden}
-.map{position:absolute;inset:0}
-.map svg{position:absolute;inset:0;width:100%;height:100%}
-.legend{position:relative;z-index:2;max-width:440px;margin:118px 0 48px max(5vw,16px);background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:30px 30px 24px;box-shadow:10px 10px 0 var(--shadow)}
-.legend .tag{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:14px;color:#fff;background:var(--mag);padding:5px 12px;border-radius:999px;margin-bottom:16px}
-.legend h1{font-size:clamp(46px,6vw,72px);letter-spacing:-.02em}
-.legend p{color:var(--mute);margin:14px 0 22px;font-size:18px}
-.legend p b{color:var(--ink)}
-.cta{display:flex;gap:12px;flex-wrap:wrap}
-.key{margin-top:22px;padding-top:16px;border-top:2px dashed color-mix(in srgb,var(--ink) 30%,transparent);display:grid;gap:6px;font-size:14px;color:var(--mute)}
-.key span{display:flex;align-items:center;gap:10px}
-.key .r{width:26px;border-top:3px dashed var(--mag)}
-.key .w{width:13px;height:13px;border-radius:50%;background:var(--card);border:3px solid var(--ink)}
-.key .s{width:13px;height:13px;background:var(--mag);transform:rotate(45deg)}
-.wp{cursor:pointer}
-/* the route down the page */
-.trail{position:relative}
-.trail::before{content:"";position:absolute;top:0;bottom:0;left:calc(max(5vw,16px) + 11px);border-left:4px dashed var(--mag);z-index:1;opacity:.9}
-.sheet{position:relative;isolation:isolate;overflow:hidden;padding:clamp(64px,8vw,120px) max(5vw,16px) clamp(64px,8vw,120px) calc(max(5vw,16px) + 60px)}
-.sheet.sea{background:var(--sea)}
-.bg{position:absolute;inset:0;z-index:-1;pointer-events:none}
-.bg svg{width:100%;height:100%;display:block}
-.wrap{max-width:1180px;margin:0 auto}
-.stop{position:absolute;left:calc(max(5vw,16px) - 2px);margin-top:10px;width:30px;height:30px;border-radius:50%;background:var(--card);border:5px solid var(--ink);z-index:2}
-.stop.own{border-radius:4px;background:var(--mag);border-color:var(--mag);transform:rotate(45deg) scale(.86)}
-.stop.end{border-color:var(--mag);border-style:dashed}
-.kicker{display:inline-block;font-weight:800;font-size:14px;color:var(--brown);margin-bottom:10px}
-/* project sheet layout */
-.ph{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start;margin-bottom:44px}
-.ph h2{font-size:clamp(40px,6vw,72px);letter-spacing:-.02em}
-.lead{font-size:clamp(18px,1.7vw,21px);margin:18px 0 0;max-width:56ch}
-.tblock{background:var(--card);border:2px solid var(--ink);border-radius:14px;box-shadow:8px 8px 0 var(--shadow);overflow:hidden}
-.tblock .t{background:var(--ink);color:var(--land);font-weight:800;font-size:13px;padding:8px 16px;display:flex;justify-content:space-between}
-.tblock dl{margin:0;padding:6px 16px}
-.tblock dl div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid color-mix(in srgb,var(--ink) 18%,transparent);font-size:15px}
-.tblock dl div:last-child{border:0}
-.tblock dt{font-weight:800}.tblock dd{margin:0;color:var(--mute)}
-.did{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 32px;list-style:none;margin:0 0 44px;padding:0}
-.did li{padding-left:28px;position:relative}
-.did li::before{content:"";position:absolute;left:2px;top:.45em;width:12px;height:12px;background:var(--mag);transform:rotate(45deg)}
-.note{font-size:15px;color:var(--mute);margin:-24px 0 44px;padding:10px 16px;border-left:4px solid var(--brown);background:color-mix(in srgb,var(--card) 70%,transparent);border-radius:0 8px 8px 0;max-width:70ch}
-.shot{border:2px solid var(--ink);border-radius:12px;overflow:hidden;background:var(--card);cursor:zoom-in;box-shadow:7px 7px 0 var(--shadow);transition:transform .15s}
-.shot:hover{transform:translate(-2px,-2px)}
-.bar{display:flex;align-items:center;gap:7px;padding:9px 14px;border-bottom:2px solid var(--ink);background:var(--land2)}
-.bar i{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink)}
-.bar i:first-child{background:var(--mag);border-color:var(--mag)}
-.bar span{margin-left:8px;font-size:13px;color:var(--mute);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-figure{margin:0}
-figcaption{font-size:15px;color:var(--mute);margin-top:12px}
-/* snyptly */
-.feature{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(24px,4vw,48px);align-items:center;margin-bottom:48px}
-.feature h3{font-size:28px;font-weight:900}
-.detect{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:48px}
-.det{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:20px;box-shadow:6px 6px 0 var(--shadow)}
-.det svg{width:100%;height:84px;display:block;margin-bottom:14px}
-.det p{margin:6px 0 0;color:var(--mute);font-size:16px}
-.mosaic{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px;align-items:start}
-.mosaic .side{display:grid;gap:24px}
-/* gallery */
-.track{display:flex;align-items:flex-start;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 10px 16px 4px;scrollbar-width:thin}
-.track figure{flex:0 0 min(78%,600px);scroll-snap-align:start}
-.galnav{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
-.galnav button{width:46px;height:46px;border:2px solid var(--ink);border-radius:50%;background:var(--card);color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}
-.galnav svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-.galnav button:hover{background:var(--mag);border-color:var(--mag);color:#fff}
-/* before/after, flows */
-.ba{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,48px)}
-.ba h3{margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.pill{font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;border:2px solid var(--ink)}
-.pill.m{background:var(--mag);border-color:var(--mag);color:#fff}
-.row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.row3 .shot{aspect-ratio:9/19;border-radius:18px;box-shadow:5px 5px 0 var(--shadow)}
-.row3 img{width:100%;height:100%;object-fit:cover;object-position:top}
-.flow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:20px;align-items:center;margin-bottom:48px}
-.arrow{width:84px;height:24px;display:block;overflow:visible}
-.arrow line{stroke:var(--mag);stroke-width:4;stroke-dasharray:9 7;stroke-linecap:round}
-.arrow path{fill:var(--mag)}
-.fix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:48px}
-.fix div{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:18px;box-shadow:6px 6px 0 var(--shadow)}
-.fix em{display:block;color:var(--brown);font-style:normal;font-weight:800;font-size:13px;margin-bottom:6px}
-.fix b{display:block;font-size:17px;margin-bottom:6px}
-/* about */
-.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,6vw,80px)}
-.about h2{font-size:clamp(40px,6vw,72px)}
-.edu{list-style:none;margin:28px 0 0;padding:0;border-left:4px dashed var(--brown)}
-.edu li{position:relative;padding:0 0 26px 26px}
-.edu li::before{content:"";position:absolute;left:-12px;top:3px;width:12px;height:12px;border-radius:50%;background:var(--card);border:4px solid var(--ink)}
-.edu b{display:block;font-size:18px}
-.edu span{color:var(--mute);font-size:16px}
-/* contact */
-.contact .card{background:var(--card);border:2px solid var(--ink);border-radius:20px;box-shadow:12px 12px 0 var(--shadow);padding:clamp(28px,5vw,64px);text-align:center}
-.contact h2{font-size:clamp(42px,7vw,84px)}
-.contact p{font-size:19px;max-width:52ch;margin:18px auto 30px;color:var(--mute)}
-.contact .cta{justify-content:center}
-.dest{width:min(520px,100%);height:auto;display:block;margin:0 auto 18px;overflow:visible}
-.dest .rt{fill:none;stroke:var(--mag);stroke-width:4;stroke-dasharray:10 8;stroke-linecap:round}
-.dest .st{fill:var(--card);stroke:var(--ink);stroke-width:4}
-.dest .ow{fill:var(--mag)}
-.dest .en{fill:var(--card);stroke:var(--mag);stroke-width:4;stroke-dasharray:5 4}
-.dest text{font:800 15px Overpass,sans-serif;fill:var(--mag)}
-footer{padding:26px max(5vw,16px);border-top:3px solid var(--ink);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:15px;color:var(--mute)}
-dialog{border:0;padding:0;background:transparent;max-width:min(1400px,94vw)}
-dialog::backdrop{background:#0d1c24e6}
-dialog img{max-height:84vh;width:auto;margin:0 auto;border-radius:10px}
-dialog p{color:#fff;text-align:center;margin:12px 0 0}
-dialog button{position:fixed;top:16px;right:16px;width:48px;height:48px;border-radius:50%;border:0;background:var(--mag);color:#fff;font-size:24px;cursor:pointer}
-.route-anim{animation:drawin 2.2s ease-out both}
-@keyframes drawin{from{opacity:0;stroke-dashoffset:500}to{opacity:1;stroke-dashoffset:0}}
-.wp.anim{animation:pop .5s both}@keyframes pop{from{opacity:0}to{opacity:1}}
-@media(max-width:980px){.ph,.feature,.ba,.about,.mosaic{grid-template-columns:minmax(0,1fr)}.detect,.fix{grid-template-columns:minmax(0,1fr)}.nav .links{display:none}}
-@media(max-width:760px){.hero{min-height:0;display:flex;flex-direction:column}.legend{order:-1;margin:96px 14px 24px;max-width:none;box-shadow:6px 6px 0 var(--shadow)}.map{position:relative;height:640px;inset:auto;border-top:3px solid var(--ink)}.did{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:600px){.sheet{padding-left:56px;padding-right:16px}.trail::before{left:26px}.stop{left:15px;width:26px;height:26px;border-width:4px}.flow{grid-template-columns:minmax(0,1fr)}.arrow{transform:rotate(90deg);justify-self:center;margin:30px 0}.track figure{flex-basis:90%}.theme span{display:none}.nav{gap:8px;padding-left:14px}.logo{font-size:16px}.tblock dl div{grid-template-columns:minmax(0,1fr);gap:0}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.shot{transition:none}.route-anim,.wp.anim{animation:none}}
-
-/* route rail */
-.rail{position:fixed;left:16px;width:150px;top:50%;transform:translateY(-50%);z-index:40;display:none;flex-direction:column;gap:4px;padding:12px 10px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);border:2px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--shadow)}
-.rail .rt{font-size:11px;font-weight:900;color:var(--brown);padding:0 6px 6px}
-.rail::before{content:"";position:absolute;left:21px;top:40px;bottom:24px;border-left:3px dashed var(--mag)}
-.rail a{position:relative;display:flex;align-items:center;gap:10px;text-decoration:none;font-size:13px;font-weight:800;color:var(--mute);padding:5px 8px 5px 4px;border-radius:999px}
-.rail i{position:relative;width:16px;height:16px;border-radius:50%;background:var(--card);border:3px solid var(--ink);flex:none;transition:transform .2s,background .2s}
-.rail i.own{border-radius:3px;transform:rotate(45deg) scale(.85)}
-.rail i.end{border-style:dashed;border-color:var(--mag)}
-.rail a:hover{color:var(--ink);background:var(--land2)}
-.rail a.on{color:#fff;background:var(--mag)}
-.rail a.on i{background:#fff;border-color:#fff}
-@media(min-width:1280px){.rail{display:flex}.trail::before{left:189px}.sheet{padding-left:250px}.stop{left:176px}}
-</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2712%27 fill=%27%23d6127e%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/src/styles.css">
 </head>
 <body>
+<!-- Pick the saved theme before the page shows, so it doesn't flash light first -->
 <script>
-try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.body.classList.add('dark')}catch(_){if(matchMedia('(prefers-color-scheme: dark)').matches)document.body.classList.add('dark')}
+  const savedTheme = localStorage.getItem('jsTheme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (savedTheme === 'dark' || (savedTheme === null && prefersDark)) {
+    document.body.classList.add('dark');
+  }
 </script>
+<!-- The map patterns behind the sections. Each section shows one with <use>. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="hills" viewBox="0 0 1400 1000" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor"><path d="M1347 120L1342 128L1339 135L1332 140L1323 143L1317 147L1312 153L1304 155L1295 153L1288 153L1280 158L1269 162L1259 161L1249 157L1241 152L1240 142L1247 132L1251 125L1247 120L1244 114L1245 107L1245 100L1246 92L1252 86L1262 84L1270 80L1278 74L1288 73L1297 80L1303 87L1309 91L1313 96L1317 100L1327 102L1341 105L1349 111L1347 120Z" opacity="0.2" stroke-width="1"/><path d="M1401 120L1394 135L1387 149L1372 159L1357 166L1348 177L1337 187L1319 187L1302 184L1288 191L1270 203L1249 206L1229 202L1209 195L1197 181L1202 160L1213 142L1211 131L1201 120L1197 107L1199 94L1198 79L1204 63L1220 55L1237 49L1250 37L1267 26L1288 31L1304 45L1317 56L1329 63L1338 72L1351 78L1376 80L1401 87L1408 103L1401 120Z" opacity="0.2" stroke-width="1"/><path d="M1449 120L1444 142L1431 162L1409 176L1393 191L1382 209L1359 219L1331 215L1310 218L1288 236L1259 251L1228 251L1198 244L1171 231L1162 204L1174 173L1180 152L1164 137L1149 120L1149 100L1149 80L1149 56L1164 36L1189 25L1209 11L1229 -11L1257 -19L1288 -4L1311 15L1331 26L1348 36L1364 47L1392 50L1434 53L1461 70L1460 96L1449 120Z" opacity="0.2" stroke-width="1"/><path d="M1498 120L1493 149L1472 174L1448 194L1434 218L1414 241L1378 245L1344 242L1319 259L1288 288L1248 301L1208 296L1168 287L1138 263L1137 221L1149 184L1138 164L1110 145L1098 120L1099 93L1097 64L1101 34L1128 12L1157 -5L1178 -32L1207 -59L1249 -56L1288 -32L1318 -15L1345 -4L1368 9L1396 17L1444 15L1495 24L1514 54L1504 90L1498 120Z" opacity="0.2" stroke-width="1"/><path d="M1548 120L1540 155L1512 185L1491 214L1477 247L1442 267L1394 266L1358 275L1330 310L1288 342L1238 348L1187 342L1140 326L1114 286L1119 233L1118 198L1085 179L1053 153L1048 120L1047 86L1042 48L1058 14L1094 -10L1121 -39L1144 -80L1187 -101L1243 -84L1288 -58L1325 -46L1358 -34L1390 -21L1436 -21L1502 -24L1551 -2L1555 42L1546 84L1548 120Z" opacity="0.2" stroke-width="1"/><path d="M1599 120L1582 162L1554 197L1540 236L1516 273L1463 287L1410 289L1378 318L1343 367L1288 395L1228 394L1167 386L1116 358L1099 300L1101 246L1075 218L1025 196L999 161L999 120L991 78L990 33L1020 -4L1057 -35L1077 -81L1110 -127L1173 -133L1238 -105L1288 -85L1332 -78L1372 -65L1416 -58L1485 -68L1561 -63L1595 -22L1589 32L1590 77L1599 120Z" opacity="0.2" stroke-width="1"/><path d="M1648 120L1623 167L1603 212L1591 260L1548 294L1479 302L1432 319L1403 373L1355 426L1288 443L1218 440L1149 426L1101 379L1089 310L1073 264L1019 244L965 214L951 168L948 120L934 70L945 20L984 -20L1011 -66L1029 -127L1082 -166L1164 -153L1234 -125L1288 -117L1339 -112L1388 -100L1451 -106L1539 -119L1609 -96L1625 -36L1623 23L1640 70L1648 120Z" opacity="0.2" stroke-width="1"/><path d="M1692 120L1668 174L1658 228L1636 281L1568 308L1498 320L1463 363L1431 435L1367 480L1288 487L1208 484L1135 457L1093 390L1076 322L1030 293L955 274L912 230L906 174L892 120L880 62L906 9L943 -39L955 -103L983 -170L1063 -191L1157 -167L1228 -150L1288 -153L1347 -146L1408 -144L1493 -164L1590 -168L1643 -118L1648 -46L1663 11L1694 63L1692 120Z" opacity="0.32" stroke-width="1.5"/><path d="M153 860L150 865L144 869L142 874L145 882L145 891L139 897L130 900L121 900L112 897L105 891L100 886L93 886L85 886L81 881L78 876L72 872L67 866L65 860L64 853L62 845L66 839L77 837L89 838L95 837L100 834L106 831L112 827L120 822L130 820L137 826L141 832L148 836L153 841L154 848L153 854L153 860Z" opacity="0.2" stroke-width="1"/><path d="M192 860L184 870L175 878L177 890L185 909L180 925L165 933L147 937L129 938L112 929L99 917L87 914L71 917L58 912L51 901L42 892L29 884L20 873L17 860L12 846L10 830L26 820L51 819L68 818L77 812L87 806L99 800L112 789L130 779L147 783L159 795L170 805L185 811L193 822L193 836L193 849L192 860Z" opacity="0.2" stroke-width="1"/><path d="M229 860L214 874L210 888L223 911L229 939L215 958L189 967L163 973L136 969L112 954L93 944L72 948L48 949L32 936L21 921L3 910L-16 897L-26 879L-34 860L-44 838L-37 817L-5 806L28 804L46 797L58 785L74 776L91 763L112 744L139 738L162 751L179 767L201 775L222 786L230 805L230 826L233 843L229 860Z" opacity="0.2" stroke-width="1"/><path d="M260 860L245 879L255 902L276 936L274 969L246 988L212 999L178 1005L142 995L112 978L86 977L55 986L26 979L9 958L-10 942L-39 930L-61 910L-73 886L-90 860L-99 830L-74 806L-27 796L6 789L21 773L37 757L58 742L81 719L112 698L147 702L174 723L201 737L234 744L258 762L264 790L268 815L271 838L260 860Z" opacity="0.2" stroke-width="1"/><path d="M288 860L284 884L313 918L333 962L314 996L274 1014L234 1029L190 1032L146 1016L112 1007L77 1018L37 1025L7 1005L-14 980L-46 966L-83 950L-106 923L-126 894L-150 860L-146 824L-99 799L-46 787L-21 771L-7 746L15 726L41 703L71 672L112 657L153 673L187 696L226 702L267 712L289 741L296 775L305 804L305 833L288 860Z" opacity="0.2" stroke-width="1"/><path d="M318 860L338 892L380 938L385 986L347 1018L300 1040L254 1056L200 1053L151 1038L112 1044L67 1063L22 1058L-9 1027L-40 1005L-86 993L-126 970L-152 937L-184 902L-207 860L-179 819L-114 794L-69 776L-55 748L-37 718L-9 693L20 658L60 625L112 624L158 650L202 663L254 664L297 683L316 723L329 760L341 793L333 829L318 860Z" opacity="0.2" stroke-width="1"/><path d="M361 860L408 902L447 958L428 1006L376 1037L326 1064L270 1079L208 1071L158 1068L112 1091L58 1106L10 1083L-25 1049L-71 1034L-127 1020L-168 989L-203 952L-245 910L-252 860L-196 817L-129 790L-102 761L-93 722L-68 689L-36 655L-1 611L51 585L112 601L164 624L220 623L282 625L323 659L342 705L362 744L372 784L358 825L361 860Z" opacity="0.2" stroke-width="1"/><path d="M421 860L486 913L505 974L461 1021L403 1056L350 1087L283 1097L217 1092L167 1108L112 1141L50 1141L1 1103L-44 1076L-106 1068L-167 1047L-211 1009L-261 969L-302 918L-279 860L-203 816L-153 783L-145 741L-133 696L-100 658L-67 612L-22 565L45 557L112 581L172 589L241 577L306 591L344 639L369 687L395 729L397 777L388 821L421 860Z" opacity="0.32" stroke-width="1.5"/><path d="M883 550L879 555L875 560L871 565L865 567L859 569L856 572L851 575L845 574L840 573L835 574L828 577L820 577L814 575L808 572L804 567L807 559L813 554L814 550L811 546L811 542L812 537L813 532L815 526L821 524L828 523L833 520L840 518L847 520L851 525L855 529L858 533L860 536L864 539L872 541L881 544L883 550Z" opacity="0.2" stroke-width="1"/><path d="M922 550L915 561L909 570L900 578L888 582L880 588L873 596L862 599L850 596L840 596L829 602L814 607L800 605L787 601L775 593L774 581L782 567L788 557L784 550L779 541L780 533L781 523L783 512L791 504L804 501L815 496L826 488L840 486L852 494L861 504L869 510L875 516L881 523L893 526L912 529L924 538L922 550Z" opacity="0.2" stroke-width="1"/><path d="M956 550L949 565L942 580L927 590L911 598L902 609L891 620L872 620L855 617L840 623L821 634L800 638L780 634L760 627L746 613L750 591L762 573L761 561L750 550L745 537L748 523L748 508L753 492L770 483L787 477L802 465L819 454L840 458L857 472L870 483L883 491L892 500L904 507L929 509L956 516L964 533L956 550Z" opacity="0.2" stroke-width="1"/><path d="M987 550L982 570L972 588L952 602L937 615L926 632L906 642L880 638L860 640L840 655L814 669L786 669L759 663L733 652L724 628L734 599L740 579L727 566L712 550L712 532L713 513L713 492L726 474L750 464L769 451L786 432L812 423L840 435L862 452L880 462L896 472L910 483L934 487L972 489L998 504L997 528L987 550Z" opacity="0.2" stroke-width="1"/><path d="M1019 550L1016 575L999 596L978 614L966 634L950 655L919 659L888 656L866 668L840 692L806 704L772 700L738 692L711 673L709 638L719 606L711 588L687 572L675 550L677 527L676 502L680 476L703 458L729 444L747 421L771 397L806 398L840 417L866 433L889 442L909 454L932 462L972 461L1016 468L1034 494L1025 524L1019 550Z" opacity="0.2" stroke-width="1"/><path d="M1053 550L1047 579L1026 604L1008 628L997 655L969 673L929 673L898 678L874 705L840 731L799 737L758 731L718 719L696 688L699 645L699 615L673 599L645 577L640 550L641 522L638 491L651 463L681 443L704 420L722 387L757 368L802 380L840 401L870 412L899 421L924 433L961 435L1015 433L1056 450L1060 486L1052 520L1053 550Z" opacity="0.2" stroke-width="1"/><path d="M1088 550L1077 583L1054 612L1043 644L1025 674L983 686L939 687L912 707L883 746L840 768L792 768L744 762L702 741L687 696L688 652L669 629L629 611L607 583L607 550L603 517L602 481L626 451L657 427L674 391L698 353L747 346L800 367L840 383L875 389L908 400L943 407L996 401L1057 404L1086 436L1081 480L1081 516L1088 550Z" opacity="0.2" stroke-width="1"/><path d="M1122 550L1105 587L1088 622L1079 660L1047 689L993 696L953 707L929 746L892 788L840 802L785 799L731 790L692 755L682 701L670 664L629 648L585 624L573 588L572 550L563 511L571 472L603 440L626 406L639 359L678 326L741 333L797 354L840 362L881 366L919 376L967 374L1035 364L1092 381L1105 428L1102 474L1114 511L1122 550Z" opacity="0.32" stroke-width="1.5"/></g></symbol>
+<symbol id="waves" viewBox="0 0 1400 1000" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor" stroke-width="1.4" opacity=".55"><path d="M0 30 Q20 23 40 30 Q60 37 80 30 Q100 23 120 30 Q140 37 160 30 Q180 23 200 30 Q220 37 240 30 Q260 23 280 30 Q300 37 320 30 Q340 23 360 30 Q380 37 400 30 Q420 23 440 30 Q460 37 480 30 Q500 23 520 30 Q540 37 560 30 Q580 23 600 30 Q620 37 640 30 Q660 23 680 30 Q700 37 720 30 Q740 23 760 30 Q780 37 800 30 Q820 23 840 30 Q860 37 880 30 Q900 23 920 30 Q940 37 960 30 Q980 23 1000 30 Q1020 37 1040 30 Q1060 23 1080 30 Q1100 37 1120 30 Q1140 23 1160 30 Q1180 37 1200 30 Q1220 23 1240 30 Q1260 37 1280 30 Q1300 23 1320 30 Q1340 37 1360 30 Q1380 23 1400 30 Q1420 37 1440 30"/><path d="M0 76 Q20 69 40 76 Q60 83 80 76 Q100 69 120 76 Q140 83 160 76 Q180 69 200 76 Q220 83 240 76 Q260 69 280 76 Q300 83 320 76 Q340 69 360 76 Q380 83 400 76 Q420 69 440 76 Q460 83 480 76 Q500 69 520 76 Q540 83 560 76 Q580 69 600 76 Q620 83 640 76 Q660 69 680 76 Q700 83 720 76 Q740 69 760 76 Q780 83 800 76 Q820 69 840 76 Q860 83 880 76 Q900 69 920 76 Q940 83 960 76 Q980 69 1000 76 Q1020 83 1040 76 Q1060 69 1080 76 Q1100 83 1120 76 Q1140 69 1160 76 Q1180 83 1200 76 Q1220 69 1240 76 Q1260 83 1280 76 Q1300 69 1320 76 Q1340 83 1360 76 Q1380 69 1400 76 Q1420 83 1440 76"/><path d="M0 122 Q20 115 40 122 Q60 129 80 122 Q100 115 120 122 Q140 129 160 122 Q180 115 200 122 Q220 129 240 122 Q260 115 280 122 Q300 129 320 122 Q340 115 360 122 Q380 129 400 122 Q420 115 440 122 Q460 129 480 122 Q500 115 520 122 Q540 129 560 122 Q580 115 600 122 Q620 129 640 122 Q660 115 680 122 Q700 129 720 122 Q740 115 760 122 Q780 129 800 122 Q820 115 840 122 Q860 129 880 122 Q900 115 920 122 Q940 129 960 122 Q980 115 1000 122 Q1020 129 1040 122 Q1060 115 1080 122 Q1100 129 1120 122 Q1140 115 1160 122 Q1180 129 1200 122 Q1220 115 1240 122 Q1260 129 1280 122 Q1300 115 1320 122 Q1340 129 1360 122 Q1380 115 1400 122 Q1420 129 1440 122"/><path d="M0 168 Q20 161 40 168 Q60 175 80 168 Q100 161 120 168 Q140 175 160 168 Q180 161 200 168 Q220 175 240 168 Q260 161 280 168 Q300 175 320 168 Q340 161 360 168 Q380 175 400 168 Q420 161 440 168 Q460 175 480 168 Q500 161 520 168 Q540 175 560 168 Q580 161 600 168 Q620 175 640 168 Q660 161 680 168 Q700 175 720 168 Q740 161 760 168 Q780 175 800 168 Q820 161 840 168 Q860 175 880 168 Q900 161 920 168 Q940 175 960 168 Q980 161 1000 168 Q1020 175 1040 168 Q1060 161 1080 168 Q1100 175 1120 168 Q1140 161 1160 168 Q1180 175 1200 168 Q1220 161 1240 168 Q1260 175 1280 168 Q1300 161 1320 168 Q1340 175 1360 168 Q1380 161 1400 168 Q1420 175 1440 168"/><path d="M0 214 Q20 207 40 214 Q60 221 80 214 Q100 207 120 214 Q140 221 160 214 Q180 207 200 214 Q220 221 240 214 Q260 207 280 214 Q300 221 320 214 Q340 207 360 214 Q380 221 400 214 Q420 207 440 214 Q460 221 480 214 Q500 207 520 214 Q540 221 560 214 Q580 207 600 214 Q620 221 640 214 Q660 207 680 214 Q700 221 720 214 Q740 207 760 214 Q780 221 800 214 Q820 207 840 214 Q860 221 880 214 Q900 207 920 214 Q940 221 960 214 Q980 207 1000 214 Q1020 221 1040 214 Q1060 207 1080 214 Q1100 221 1120 214 Q1140 207 1160 214 Q1180 221 1200 214 Q1220 207 1240 214 Q1260 221 1280 214 Q1300 207 1320 214 Q1340 221 1360 214 Q1380 207 1400 214 Q1420 221 1440 214"/><path d="M0 260 Q20 253 40 260 Q60 267 80 260 Q100 253 120 260 Q140 267 160 260 Q180 253 200 260 Q220 267 240 260 Q260 253 280 260 Q300 267 320 260 Q340 253 360 260 Q380 267 400 260 Q420 253 440 260 Q460 267 480 260 Q500 253 520 260 Q540 267 560 260 Q580 253 600 260 Q620 267 640 260 Q660 253 680 260 Q700 267 720 260 Q740 253 760 260 Q780 267 800 260 Q820 253 840 260 Q860 267 880 260 Q900 253 920 260 Q940 267 960 260 Q980 253 1000 260 Q1020 267 1040 260 Q1060 253 1080 260 Q1100 267 1120 260 Q1140 253 1160 260 Q1180 267 1200 260 Q1220 253 1240 260 Q1260 267 1280 260 Q1300 253 1320 260 Q1340 267 1360 260 Q1380 253 1400 260 Q1420 267 1440 260"/><path d="M0 306 Q20 299 40 306 Q60 313 80 306 Q100 299 120 306 Q140 313 160 306 Q180 299 200 306 Q220 313 240 306 Q260 299 280 306 Q300 313 320 306 Q340 299 360 306 Q380 313 400 306 Q420 299 440 306 Q460 313 480 306 Q500 299 520 306 Q540 313 560 306 Q580 299 600 306 Q620 313 640 306 Q660 299 680 306 Q700 313 720 306 Q740 299 760 306 Q780 313 800 306 Q820 299 840 306 Q860 313 880 306 Q900 299 920 306 Q940 313 960 306 Q980 299 1000 306 Q1020 313 1040 306 Q1060 299 1080 306 Q1100 313 1120 306 Q1140 299 1160 306 Q1180 313 1200 306 Q1220 299 1240 306 Q1260 313 1280 306 Q1300 299 1320 306 Q1340 313 1360 306 Q1380 299 1400 306 Q1420 313 1440 306"/><path d="M0 352 Q20 345 40 352 Q60 359 80 352 Q100 345 120 352 Q140 359 160 352 Q180 345 200 352 Q220 359 240 352 Q260 345 280 352 Q300 359 320 352 Q340 345 360 352 Q380 359 400 352 Q420 345 440 352 Q460 359 480 352 Q500 345 520 352 Q540 359 560 352 Q580 345 600 352 Q620 359 640 352 Q660 345 680 352 Q700 359 720 352 Q740 345 760 352 Q780 359 800 352 Q820 345 840 352 Q860 359 880 352 Q900 345 920 352 Q940 359 960 352 Q980 345 1000 352 Q1020 359 1040 352 Q1060 345 1080 352 Q1100 359 1120 352 Q1140 345 1160 352 Q1180 359 1200 352 Q1220 345 1240 352 Q1260 359 1280 352 Q1300 345 1320 352 Q1340 359 1360 352 Q1380 345 1400 352 Q1420 359 1440 352"/><path d="M0 398 Q20 391 40 398 Q60 405 80 398 Q100 391 120 398 Q140 405 160 398 Q180 391 200 398 Q220 405 240 398 Q260 391 280 398 Q300 405 320 398 Q340 391 360 398 Q380 405 400 398 Q420 391 440 398 Q460 405 480 398 Q500 391 520 398 Q540 405 560 398 Q580 391 600 398 Q620 405 640 398 Q660 391 680 398 Q700 405 720 398 Q740 391 760 398 Q780 405 800 398 Q820 391 840 398 Q860 405 880 398 Q900 391 920 398 Q940 405 960 398 Q980 391 1000 398 Q1020 405 1040 398 Q1060 391 1080 398 Q1100 405 1120 398 Q1140 391 1160 398 Q1180 405 1200 398 Q1220 391 1240 398 Q1260 405 1280 398 Q1300 391 1320 398 Q1340 405 1360 398 Q1380 391 1400 398 Q1420 405 1440 398"/><path d="M0 444 Q20 437 40 444 Q60 451 80 444 Q100 437 120 444 Q140 451 160 444 Q180 437 200 444 Q220 451 240 444 Q260 437 280 444 Q300 451 320 444 Q340 437 360 444 Q380 451 400 444 Q420 437 440 444 Q460 451 480 444 Q500 437 520 444 Q540 451 560 444 Q580 437 600 444 Q620 451 640 444 Q660 437 680 444 Q700 451 720 444 Q740 437 760 444 Q780 451 800 444 Q820 437 840 444 Q860 451 880 444 Q900 437 920 444 Q940 451 960 444 Q980 437 1000 444 Q1020 451 1040 444 Q1060 437 1080 444 Q1100 451 1120 444 Q1140 437 1160 444 Q1180 451 1200 444 Q1220 437 1240 444 Q1260 451 1280 444 Q1300 437 1320 444 Q1340 451 1360 444 Q1380 437 1400 444 Q1420 451 1440 444"/><path d="M0 490 Q20 483 40 490 Q60 497 80 490 Q100 483 120 490 Q140 497 160 490 Q180 483 200 490 Q220 497 240 490 Q260 483 280 490 Q300 497 320 490 Q340 483 360 490 Q380 497 400 490 Q420 483 440 490 Q460 497 480 490 Q500 483 520 490 Q540 497 560 490 Q580 483 600 490 Q620 497 640 490 Q660 483 680 490 Q700 497 720 490 Q740 483 760 490 Q780 497 800 490 Q820 483 840 490 Q860 497 880 490 Q900 483 920 490 Q940 497 960 490 Q980 483 1000 490 Q1020 497 1040 490 Q1060 483 1080 490 Q1100 497 1120 490 Q1140 483 1160 490 Q1180 497 1200 490 Q1220 483 1240 490 Q1260 497 1280 490 Q1300 483 1320 490 Q1340 497 1360 490 Q1380 483 1400 490 Q1420 497 1440 490"/><path d="M0 536 Q20 529 40 536 Q60 543 80 536 Q100 529 120 536 Q140 543 160 536 Q180 529 200 536 Q220 543 240 536 Q260 529 280 536 Q300 543 320 536 Q340 529 360 536 Q380 543 400 536 Q420 529 440 536 Q460 543 480 536 Q500 529 520 536 Q540 543 560 536 Q580 529 600 536 Q620 543 640 536 Q660 529 680 536 Q700 543 720 536 Q740 529 760 536 Q780 543 800 536 Q820 529 840 536 Q860 543 880 536 Q900 529 920 536 Q940 543 960 536 Q980 529 1000 536 Q1020 543 1040 536 Q1060 529 1080 536 Q1100 543 1120 536 Q1140 529 1160 536 Q1180 543 1200 536 Q1220 529 1240 536 Q1260 543 1280 536 Q1300 529 1320 536 Q1340 543 1360 536 Q1380 529 1400 536 Q1420 543 1440 536"/><path d="M0 582 Q20 575 40 582 Q60 589 80 582 Q100 575 120 582 Q140 589 160 582 Q180 575 200 582 Q220 589 240 582 Q260 575 280 582 Q300 589 320 582 Q340 575 360 582 Q380 589 400 582 Q420 575 440 582 Q460 589 480 582 Q500 575 520 582 Q540 589 560 582 Q580 575 600 582 Q620 589 640 582 Q660 575 680 582 Q700 589 720 582 Q740 575 760 582 Q780 589 800 582 Q820 575 840 582 Q860 589 880 582 Q900 575 920 582 Q940 589 960 582 Q980 575 1000 582 Q1020 589 1040 582 Q1060 575 1080 582 Q1100 589 1120 582 Q1140 575 1160 582 Q1180 589 1200 582 Q1220 575 1240 582 Q1260 589 1280 582 Q1300 575 1320 582 Q1340 589 1360 582 Q1380 575 1400 582 Q1420 589 1440 582"/><path d="M0 628 Q20 621 40 628 Q60 635 80 628 Q100 621 120 628 Q140 635 160 628 Q180 621 200 628 Q220 635 240 628 Q260 621 280 628 Q300 635 320 628 Q340 621 360 628 Q380 635 400 628 Q420 621 440 628 Q460 635 480 628 Q500 621 520 628 Q540 635 560 628 Q580 621 600 628 Q620 635 640 628 Q660 621 680 628 Q700 635 720 628 Q740 621 760 628 Q780 635 800 628 Q820 621 840 628 Q860 635 880 628 Q900 621 920 628 Q940 635 960 628 Q980 621 1000 628 Q1020 635 1040 628 Q1060 621 1080 628 Q1100 635 1120 628 Q1140 621 1160 628 Q1180 635 1200 628 Q1220 621 1240 628 Q1260 635 1280 628 Q1300 621 1320 628 Q1340 635 1360 628 Q1380 621 1400 628 Q1420 635 1440 628"/><path d="M0 674 Q20 667 40 674 Q60 681 80 674 Q100 667 120 674 Q140 681 160 674 Q180 667 200 674 Q220 681 240 674 Q260 667 280 674 Q300 681 320 674 Q340 667 360 674 Q380 681 400 674 Q420 667 440 674 Q460 681 480 674 Q500 667 520 674 Q540 681 560 674 Q580 667 600 674 Q620 681 640 674 Q660 667 680 674 Q700 681 720 674 Q740 667 760 674 Q780 681 800 674 Q820 667 840 674 Q860 681 880 674 Q900 667 920 674 Q940 681 960 674 Q980 667 1000 674 Q1020 681 1040 674 Q1060 667 1080 674 Q1100 681 1120 674 Q1140 667 1160 674 Q1180 681 1200 674 Q1220 667 1240 674 Q1260 681 1280 674 Q1300 667 1320 674 Q1340 681 1360 674 Q1380 667 1400 674 Q1420 681 1440 674"/><path d="M0 720 Q20 713 40 720 Q60 727 80 720 Q100 713 120 720 Q140 727 160 720 Q180 713 200 720 Q220 727 240 720 Q260 713 280 720 Q300 727 320 720 Q340 713 360 720 Q380 727 400 720 Q420 713 440 720 Q460 727 480 720 Q500 713 520 720 Q540 727 560 720 Q580 713 600 720 Q620 727 640 720 Q660 713 680 720 Q700 727 720 720 Q740 713 760 720 Q780 727 800 720 Q820 713 840 720 Q860 727 880 720 Q900 713 920 720 Q940 727 960 720 Q980 713 1000 720 Q1020 727 1040 720 Q1060 713 1080 720 Q1100 727 1120 720 Q1140 713 1160 720 Q1180 727 1200 720 Q1220 713 1240 720 Q1260 727 1280 720 Q1300 713 1320 720 Q1340 727 1360 720 Q1380 713 1400 720 Q1420 727 1440 720"/><path d="M0 766 Q20 759 40 766 Q60 773 80 766 Q100 759 120 766 Q140 773 160 766 Q180 759 200 766 Q220 773 240 766 Q260 759 280 766 Q300 773 320 766 Q340 759 360 766 Q380 773 400 766 Q420 759 440 766 Q460 773 480 766 Q500 759 520 766 Q540 773 560 766 Q580 759 600 766 Q620 773 640 766 Q660 759 680 766 Q700 773 720 766 Q740 759 760 766 Q780 773 800 766 Q820 759 840 766 Q860 773 880 766 Q900 759 920 766 Q940 773 960 766 Q980 759 1000 766 Q1020 773 1040 766 Q1060 759 1080 766 Q1100 773 1120 766 Q1140 759 1160 766 Q1180 773 1200 766 Q1220 759 1240 766 Q1260 773 1280 766 Q1300 759 1320 766 Q1340 773 1360 766 Q1380 759 1400 766 Q1420 773 1440 766"/><path d="M0 812 Q20 805 40 812 Q60 819 80 812 Q100 805 120 812 Q140 819 160 812 Q180 805 200 812 Q220 819 240 812 Q260 805 280 812 Q300 819 320 812 Q340 805 360 812 Q380 819 400 812 Q420 805 440 812 Q460 819 480 812 Q500 805 520 812 Q540 819 560 812 Q580 805 600 812 Q620 819 640 812 Q660 805 680 812 Q700 819 720 812 Q740 805 760 812 Q780 819 800 812 Q820 805 840 812 Q860 819 880 812 Q900 805 920 812 Q940 819 960 812 Q980 805 1000 812 Q1020 819 1040 812 Q1060 805 1080 812 Q1100 819 1120 812 Q1140 805 1160 812 Q1180 819 1200 812 Q1220 805 1240 812 Q1260 819 1280 812 Q1300 805 1320 812 Q1340 819 1360 812 Q1380 805 1400 812 Q1420 819 1440 812"/><path d="M0 858 Q20 851 40 858 Q60 865 80 858 Q100 851 120 858 Q140 865 160 858 Q180 851 200 858 Q220 865 240 858 Q260 851 280 858 Q300 865 320 858 Q340 851 360 858 Q380 865 400 858 Q420 851 440 858 Q460 865 480 858 Q500 851 520 858 Q540 865 560 858 Q580 851 600 858 Q620 865 640 858 Q660 851 680 858 Q700 865 720 858 Q740 851 760 858 Q780 865 800 858 Q820 851 840 858 Q860 865 880 858 Q900 851 920 858 Q940 865 960 858 Q980 851 1000 858 Q1020 865 1040 858 Q1060 851 1080 858 Q1100 865 1120 858 Q1140 851 1160 858 Q1180 865 1200 858 Q1220 851 1240 858 Q1260 865 1280 858 Q1300 851 1320 858 Q1340 865 1360 858 Q1380 851 1400 858 Q1420 865 1440 858"/><path d="M0 904 Q20 897 40 904 Q60 911 80 904 Q100 897 120 904 Q140 911 160 904 Q180 897 200 904 Q220 911 240 904 Q260 897 280 904 Q300 911 320 904 Q340 897 360 904 Q380 911 400 904 Q420 897 440 904 Q460 911 480 904 Q500 897 520 904 Q540 911 560 904 Q580 897 600 904 Q620 911 640 904 Q660 897 680 904 Q700 911 720 904 Q740 897 760 904 Q780 911 800 904 Q820 897 840 904 Q860 911 880 904 Q900 897 920 904 Q940 911 960 904 Q980 897 1000 904 Q1020 911 1040 904 Q1060 897 1080 904 Q1100 911 1120 904 Q1140 897 1160 904 Q1180 911 1200 904 Q1220 897 1240 904 Q1260 911 1280 904 Q1300 897 1320 904 Q1340 911 1360 904 Q1380 897 1400 904 Q1420 911 1440 904"/><path d="M0 950 Q20 943 40 950 Q60 957 80 950 Q100 943 120 950 Q140 957 160 950 Q180 943 200 950 Q220 957 240 950 Q260 943 280 950 Q300 957 320 950 Q340 943 360 950 Q380 957 400 950 Q420 943 440 950 Q460 957 480 950 Q500 943 520 950 Q540 957 560 950 Q580 943 600 950 Q620 957 640 950 Q660 943 680 950 Q700 957 720 950 Q740 943 760 950 Q780 957 800 950 Q820 943 840 950 Q860 957 880 950 Q900 943 920 950 Q940 957 960 950 Q980 943 1000 950 Q1020 957 1040 950 Q1060 943 1080 950 Q1100 957 1120 950 Q1140 943 1160 950 Q1180 957 1200 950 Q1220 943 1240 950 Q1260 957 1280 950 Q1300 943 1320 950 Q1340 957 1360 950 Q1380 943 1400 950 Q1420 957 1440 950"/><path d="M0 996 Q20 989 40 996 Q60 1003 80 996 Q100 989 120 996 Q140 1003 160 996 Q180 989 200 996 Q220 1003 240 996 Q260 989 280 996 Q300 1003 320 996 Q340 989 360 996 Q380 1003 400 996 Q420 989 440 996 Q460 1003 480 996 Q500 989 520 996 Q540 1003 560 996 Q580 989 600 996 Q620 1003 640 996 Q660 989 680 996 Q700 1003 720 996 Q740 989 760 996 Q780 1003 800 996 Q820 989 840 996 Q860 1003 880 996 Q900 989 920 996 Q940 1003 960 996 Q980 989 1000 996 Q1020 1003 1040 996 Q1060 989 1080 996 Q1100 1003 1120 996 Q1140 989 1160 996 Q1180 1003 1200 996 Q1220 989 1240 996 Q1260 1003 1280 996 Q1300 989 1320 996 Q1340 1003 1360 996 Q1380 989 1400 996 Q1420 1003 1440 996"/></g></symbol>
+</svg>
+
 <nav class="nav" aria-label="Main">
   <a class="logo" href="#top"><i></i>Jason Senungi</a>
-  <div class="links"><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></div>
-  <button class="theme" id="theme" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" id="ticon"></svg><span id="tlabel">Dark</span></button>
+  <div class="links"><a href="#work" data-section="work">Work</a><a href="#about" data-section="about">About</a><a href="#contact" data-section="contact">Contact</a></div>
+  <button class="theme" id="theme" type="button"><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/></svg><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="tlabel">Dark</span></button>
   <a class="btn mag" href="https://github.com/jasonsenungi" target="_blank" rel="noopener">GitHub</a>
 </nav>
 
 <header class="hero" id="top">
-  <div class="map" id="map" role="img" aria-label="Map of my route: MBO at Talland College, internships at XML Hosting and Learn and Earn, HBO-ICT at the HvA with Dokkie and the LucaStars Webshop, my own project Snyptly, and next stop: an internship from February 2027."><svg id="mapsvg" preserveAspectRatio="xMidYMid slice"></svg></div>
+  <div class="map" role="img" aria-label="Map of my route: MBO at Talland College, internships at XML Hosting and Learn and Earn, HBO-ICT at the HvA with Dokkie and the LucaStars Webshop, my own project Snyptly, and next stop: an internship from February 2027.">
+    <!-- The land, sea and hills (just a drawing in the background) -->
+    <svg class="map-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+<rect class="land" width="1200" height="800"/><path class="sea" d="M1200 0L1140 0L1108 27L1117 53L1105 80L1117 107L1155 133L1147 160L1147 187L1145 213L1100 240L1091 267L1094 293L1081 320L1115 347L1135 373L1122 400L1132 427L1107 453L1069 480L1075 507L1065 533L1069 560L1109 587L1107 613L1105 640L1109 667L1066 693L1049 720L1054 747L1039 773L1066 800L1200 800Z"/><path class="coast" d="M1200 0L1140 0L1108 27L1117 53L1105 80L1117 107L1155 133L1147 160L1147 187L1145 213L1100 240L1091 267L1094 293L1081 320L1115 347L1135 373L1122 400L1132 427L1107 453L1069 480L1075 507L1065 533L1069 560L1109 587L1107 613L1105 640L1109 667L1066 693L1049 720L1054 747L1039 773L1066 800L1200 800Z" transform="translate(-10 0)" opacity="0.6"/><path class="coast" d="M1200 0L1140 0L1108 27L1117 53L1105 80L1117 107L1155 133L1147 160L1147 187L1145 213L1100 240L1091 267L1094 293L1081 320L1115 347L1135 373L1122 400L1132 427L1107 453L1069 480L1075 507L1065 533L1069 560L1109 587L1107 613L1105 640L1109 667L1066 693L1049 720L1054 747L1039 773L1066 800L1200 800Z" transform="translate(-20 0)" opacity="0.4"/><path class="coast" d="M1200 0L1140 0L1108 27L1117 53L1105 80L1117 107L1155 133L1147 160L1147 187L1145 213L1100 240L1091 267L1094 293L1081 320L1115 347L1135 373L1122 400L1132 427L1107 453L1069 480L1075 507L1065 533L1069 560L1109 587L1107 613L1105 640L1109 667L1066 693L1049 720L1054 747L1039 773L1066 800L1200 800Z" transform="translate(-30 0)" opacity="0.2"/><path class="hill" d="M425 176L422 180L420 183L418 186L414 189L409 190L406 192L403 195L401 197L397 199L392 198L388 197L384 198L380 200L374 203L369 203L364 202L359 201L354 198L351 195L351 190L355 185L358 181L358 179L355 176L353 173L353 170L354 167L354 163L354 159L357 156L361 154L366 153L370 151L374 148L379 146L384 146L389 149L392 153L395 156L398 158L401 160L403 162L406 164L412 164L419 165L425 168L427 172L425 176Z"/><path class="hill" d="M461 176L458 183L455 190L449 196L441 200L434 204L429 209L425 215L417 219L408 219L399 217L391 218L384 223L375 229L364 232L353 231L343 229L332 226L325 220L323 211L327 200L333 192L333 186L327 182L322 176L320 170L321 164L321 157L321 149L324 142L331 137L340 134L348 130L355 124L363 117L373 116L384 120L393 127L400 133L406 136L412 140L417 144L423 147L433 148L448 149L461 152L467 160L465 168L461 176Z"/><path class="hill" d="M495 176L493 187L488 197L478 205L467 212L460 219L455 228L446 236L432 237L417 235L406 237L396 244L384 255L369 262L353 263L337 260L321 257L308 250L301 238L304 222L310 208L310 199L302 192L291 185L286 176L287 166L287 157L285 146L287 134L295 125L308 119L319 113L328 104L338 93L352 87L369 91L384 100L396 109L407 114L417 118L425 123L434 127L448 128L469 128L490 131L502 140L503 152L498 165L495 176Z"/><path class="hill" d="M529 176L527 190L518 203L505 213L496 224L490 236L480 247L463 252L443 252L427 253L415 262L402 277L384 290L363 294L342 293L321 289L301 283L288 269L285 249L290 229L290 216L279 208L264 200L253 189L252 176L252 163L249 149L248 134L255 121L270 111L284 102L294 89L304 73L321 63L343 63L366 73L384 84L399 90L414 94L427 99L440 105L457 106L482 104L510 104L531 113L536 129L532 147L529 162L529 176Z"/><path class="hill" d="M565 176L559 193L545 208L534 222L529 238L520 253L501 263L476 265L454 266L440 276L427 296L409 315L384 324L358 325L331 322L305 317L284 304L275 281L276 256L275 238L262 228L240 220L223 208L218 192L218 176L214 159L210 141L214 124L228 109L245 97L256 81L264 61L280 43L307 39L337 47L363 60L384 67L403 70L421 74L438 80L458 81L486 77L521 74L550 81L562 100L561 122L559 141L562 159L565 176Z"/><path class="hill" d="M598 176L587 196L575 214L569 233L563 252L544 267L515 273L487 276L470 286L459 309L441 335L415 351L384 355L352 354L321 351L292 340L274 317L269 287L265 264L250 252L223 245L198 233L187 215L185 195L182 176L174 156L173 134L184 115L202 98L214 79L220 55L234 31L262 19L299 24L334 37L361 45L384 47L407 48L428 53L452 55L483 49L522 42L560 46L580 64L584 91L583 115L589 135L598 155L598 176Z"/><path class="hill outer" d="M628 176L616 199L611 221L607 244L591 265L560 276L526 281L505 292L494 317L481 349L455 373L421 383L384 384L347 383L312 375L284 354L270 322L262 294L244 279L213 273L180 263L161 245L156 221L152 199L142 176L135 152L141 128L158 107L170 85L174 57L182 26L209 7L251 6L295 17L330 26L357 26L384 24L411 26L438 28L470 21L513 10L558 8L588 25L598 54L601 83L610 107L625 128L634 152L628 176Z"/><path class="hill" d="M792 304L791 307L787 310L784 312L783 316L785 321L787 327L785 332L780 335L774 336L768 337L762 337L756 335L751 331L748 327L744 326L739 326L733 326L730 324L727 320L725 317L721 315L717 312L714 308L714 304L713 300L711 295L711 290L715 286L723 285L731 286L737 286L741 284L744 283L748 281L752 279L756 276L762 273L768 271L774 272L778 276L781 280L785 282L790 285L793 288L794 292L793 297L792 300L792 304Z"/><path class="hill" d="M827 304L822 310L815 316L813 321L818 330L823 342L822 353L815 361L803 365L791 367L779 368L767 366L756 359L747 352L739 350L730 351L719 352L710 349L704 342L700 336L692 331L683 326L676 320L673 312L670 304L666 295L663 285L668 277L681 272L698 271L711 271L719 268L725 264L731 260L739 256L746 250L756 243L768 237L780 237L790 243L797 251L805 256L816 260L824 265L828 273L828 282L828 290L829 297L827 304Z"/><path class="hill" d="M857 304L848 313L844 322L851 333L862 350L866 367L858 379L842 387L825 392L807 396L789 395L771 388L756 379L743 375L729 378L713 381L698 378L688 369L681 360L670 353L655 347L642 339L635 328L629 316L621 304L614 290L616 276L633 266L658 262L679 260L691 256L698 248L707 241L717 234L728 226L740 215L756 204L774 202L790 209L803 219L816 227L832 231L848 236L857 246L860 260L860 272L863 283L863 294L857 304Z"/><path class="hill" d="M882 304L877 316L885 330L903 349L914 371L908 390L889 402L867 411L845 418L821 421L797 416L774 407L756 401L738 405L717 411L696 411L681 401L669 388L656 378L636 372L616 364L602 351L592 336L581 321L568 304L565 285L581 269L612 260L641 255L658 248L666 238L675 226L687 216L701 206L715 191L733 175L756 168L779 173L799 186L817 196L838 199L861 203L878 213L886 230L889 247L893 262L896 276L893 291L882 304Z"/><path class="hill" d="M909 304L918 320L942 341L962 367L962 392L942 410L916 422L890 433L863 441L832 441L802 432L778 426L756 431L732 441L705 445L682 436L666 419L649 407L626 401L599 394L577 381L561 364L545 346L526 326L516 304L528 282L562 265L598 256L621 246L630 233L638 216L650 202L666 189L682 171L701 151L726 137L756 139L783 152L807 164L833 166L863 167L889 176L904 194L911 216L917 235L925 252L925 270L916 288L909 304Z"/><path class="hill" d="M949 304L978 326L1008 354L1018 384L1000 408L970 426L941 441L911 454L877 459L841 455L809 450L783 455L756 469L725 479L695 472L672 454L652 438L625 431L591 426L560 415L538 397L517 377L492 356L473 332L477 304L510 280L552 264L581 250L591 234L596 213L607 193L624 176L641 157L660 132L687 112L721 108L756 120L787 132L817 134L853 131L888 135L912 153L925 179L935 202L947 222L953 244L948 266L941 286L949 304Z"/><path class="hill outer" d="M1009 304L1051 333L1072 367L1060 397L1028 421L995 440L965 459L929 471L888 473L849 471L818 477L790 494L756 510L720 509L689 490L663 471L633 462L594 460L555 453L524 436L497 415L466 393L437 367L431 336L459 304L505 279L540 261L551 241L551 217L558 192L575 170L594 148L613 120L638 94L676 82L718 90L756 102L792 104L831 96L874 94L908 109L929 137L944 164L961 188L974 211L975 237L969 262L977 282L1009 304Z"/><path class="hill" d="M970 704L968 707L966 710L964 713L961 715L958 716L954 717L951 718L949 720L946 722L943 723L939 722L936 721L933 722L929 724L924 725L920 724L916 723L912 722L909 720L907 716L909 712L913 709L915 706L915 704L913 702L912 699L913 697L913 694L913 691L914 688L917 686L921 685L925 684L928 683L932 681L936 680L940 681L943 684L946 687L948 689L950 691L951 693L953 694L955 696L961 696L966 698L970 701L970 704Z"/><path class="hill" d="M1001 704L997 710L994 715L990 721L984 725L977 727L971 730L967 734L963 739L956 740L949 739L942 737L936 739L929 743L921 747L912 747L904 746L895 743L888 740L883 734L884 726L890 718L894 712L894 708L890 704L887 699L886 694L887 689L888 683L889 677L893 672L900 669L907 667L914 664L920 660L927 656L936 657L944 661L949 667L954 671L959 674L963 678L966 682L971 684L981 685L992 687L1001 691L1004 697L1001 704Z"/><path class="hill" d="M1027 704L1024 713L1021 721L1014 728L1004 733L996 738L991 744L985 752L976 756L965 755L954 753L945 755L936 761L925 768L912 771L899 770L887 767L874 763L865 756L863 745L869 733L874 723L874 716L867 711L861 704L859 696L860 689L860 681L860 672L864 663L873 657L884 654L893 649L901 641L911 634L923 632L936 638L946 646L955 652L963 656L970 660L976 666L983 669L996 670L1013 671L1028 676L1035 684L1032 695L1027 704Z"/><path class="hill" d="M1053 704L1052 715L1046 726L1036 735L1025 742L1018 751L1012 761L1002 768L987 770L972 768L959 769L949 777L936 788L920 795L903 796L886 793L869 789L855 782L848 769L851 752L857 738L856 728L847 722L836 714L831 704L831 694L832 683L830 672L832 660L842 650L855 644L867 638L876 627L887 616L902 610L920 614L936 624L949 632L960 637L971 641L981 647L990 652L1005 653L1027 652L1049 656L1062 665L1062 679L1056 692L1053 704Z"/><path class="hill" d="M1080 704L1078 718L1069 730L1057 741L1048 752L1043 765L1033 776L1016 781L995 780L979 781L967 791L954 806L936 817L915 821L894 820L873 816L853 810L840 796L838 776L842 757L842 744L830 737L814 728L804 717L803 704L803 691L801 677L800 662L808 649L823 640L837 631L847 618L856 602L873 591L895 592L918 602L936 612L951 617L966 621L979 626L992 632L1009 633L1035 631L1063 632L1082 642L1087 658L1082 675L1079 690L1080 704Z"/><path class="hill" d="M1109 704L1103 720L1091 735L1081 749L1076 764L1068 779L1049 788L1024 789L1004 791L990 801L978 819L960 837L936 845L911 846L886 843L861 839L841 826L832 804L833 780L831 764L817 755L796 747L780 735L775 720L775 704L773 688L769 671L773 654L788 640L803 629L813 613L822 593L837 577L863 573L892 581L916 592L936 599L954 601L972 605L988 610L1008 612L1035 608L1068 606L1095 614L1106 631L1104 652L1102 671L1106 687L1109 704Z"/><path class="hill outer" d="M1135 704L1125 722L1115 740L1110 758L1104 776L1087 790L1059 795L1033 797L1017 808L1006 829L990 852L965 867L936 870L907 869L877 866L851 856L835 834L829 807L825 786L809 776L783 769L760 758L750 741L749 722L746 704L740 685L740 665L751 647L768 632L778 614L784 591L796 569L822 558L857 563L889 574L914 581L936 582L957 584L978 588L1000 590L1029 585L1066 579L1100 583L1118 601L1120 625L1120 648L1126 666L1135 685L1135 704Z"/><path class="hill" d="M211 640L208 643L207 645L206 648L204 650L201 652L197 653L194 654L193 657L192 661L189 665L185 667L180 667L175 667L171 666L167 663L165 659L165 655L164 652L160 651L157 650L154 648L153 645L152 643L150 640L149 637L149 634L151 631L152 628L153 625L154 621L158 618L163 618L169 620L173 622L177 622L180 622L183 623L186 623L190 622L195 620L201 619L206 621L208 624L209 628L209 631L211 634L212 637L211 640Z"/><path class="hill" d="M239 640L236 645L235 651L233 656L227 660L219 662L213 664L211 670L210 678L206 687L199 692L189 693L180 694L171 693L162 689L157 681L154 673L151 668L145 666L137 664L130 661L127 656L126 651L123 646L118 640L117 634L119 628L122 622L123 615L123 608L128 601L138 599L150 601L160 604L167 605L174 605L180 604L186 604L193 603L203 599L214 596L225 597L230 603L232 610L235 617L239 622L242 628L242 634L239 640Z"/><path class="hill" d="M266 640L265 648L263 657L256 663L245 668L236 672L233 679L233 691L230 704L221 714L208 718L194 719L180 719L167 715L156 706L149 695L144 686L135 683L123 682L111 679L105 672L102 664L98 656L91 649L86 640L86 631L89 622L90 612L89 601L93 590L105 584L123 585L140 589L152 590L161 588L170 586L180 585L190 583L203 577L218 571L234 570L245 577L250 588L254 598L261 605L269 613L272 622L270 631L266 640Z"/><path class="hill" d="M295 640L294 651L288 661L275 669L262 675L257 684L259 699L260 717L251 731L235 739L217 742L198 743L180 742L164 733L151 719L142 707L131 703L114 703L98 701L87 693L82 682L76 672L67 663L57 652L54 640L56 628L56 615L53 601L53 586L66 575L89 573L113 575L131 577L143 574L155 570L167 567L180 563L195 556L214 547L234 543L251 549L261 562L268 575L278 584L290 593L299 604L299 616L296 629L295 640Z"/><path class="hill" d="M325 640L321 654L307 665L291 674L284 684L288 701L293 723L287 743L270 755L248 761L225 765L202 765L180 759L161 744L147 730L133 724L113 726L91 726L75 718L66 705L59 692L47 681L33 669L25 655L24 640L22 625L17 608L13 589L23 573L49 566L80 566L104 567L119 562L133 555L147 549L163 544L180 536L201 523L225 515L248 518L263 533L274 549L287 560L305 569L320 580L325 595L324 611L323 626L325 640Z"/><path class="hill" d="M352 640L340 656L322 668L312 680L317 699L327 724L327 749L311 767L286 776L259 782L233 785L205 782L180 770L160 754L141 747L119 749L92 753L70 747L56 732L47 715L34 703L15 691L0 676L-6 658L-9 640L-18 621L-27 599L-22 578L4 565L41 561L72 560L91 554L105 544L121 534L139 527L158 517L180 502L207 489L235 488L257 502L273 521L289 534L312 542L334 553L346 569L349 588L349 606L352 623L352 640Z"/><path class="hill outer" d="M372 640L354 657L341 672L346 691L362 718L370 748L357 771L330 785L300 793L270 801L239 802L207 793L180 778L157 769L132 773L102 780L73 777L54 762L41 743L26 728L4 715L-18 701L-30 682L-37 661L-49 640L-64 616L-66 591L-43 572L-2 562L36 558L59 551L74 537L89 523L109 512L130 501L152 484L180 466L212 460L241 471L263 492L284 507L310 515L339 522L360 538L368 559L371 581L377 601L380 620L372 640Z"/><path class="hill" d="M1095 96L1094 97L1094 99L1096 101L1098 104L1098 106L1096 108L1094 109L1091 110L1088 110L1085 110L1082 109L1080 107L1078 107L1076 108L1073 108L1071 107L1070 106L1068 105L1066 104L1064 103L1062 102L1061 100L1059 98L1058 96L1057 94L1058 92L1062 90L1066 90L1068 89L1070 89L1071 87L1072 86L1074 85L1075 84L1077 82L1080 80L1083 80L1085 81L1087 83L1090 84L1092 84L1095 85L1096 87L1096 89L1096 91L1096 93L1096 94L1095 96Z"/><path class="hill" d="M1109 96L1109 99L1112 102L1116 107L1118 112L1116 117L1111 119L1106 121L1101 123L1095 123L1089 122L1084 119L1080 119L1076 120L1071 121L1066 121L1063 118L1060 115L1056 114L1051 112L1046 110L1043 107L1040 104L1037 100L1034 96L1035 92L1040 88L1048 86L1054 85L1057 83L1059 80L1061 78L1064 75L1067 72L1070 69L1074 65L1080 64L1085 66L1090 68L1095 70L1100 70L1105 72L1109 75L1110 79L1110 83L1111 86L1112 90L1111 93L1109 96Z"/><path class="hill" d="M1123 96L1128 101L1135 107L1140 115L1139 121L1133 126L1125 130L1118 133L1110 134L1101 134L1093 131L1086 130L1080 132L1073 135L1066 135L1060 132L1055 128L1050 125L1042 124L1034 122L1028 118L1024 113L1018 108L1013 103L1012 96L1018 90L1028 86L1038 83L1043 80L1045 76L1047 71L1050 67L1054 63L1059 58L1064 52L1072 49L1080 50L1088 53L1095 56L1103 56L1111 56L1118 60L1121 66L1123 72L1124 77L1126 82L1126 87L1123 92L1123 96Z"/><path class="hill" d="M1142 96L1153 103L1163 112L1164 122L1157 129L1147 134L1138 139L1129 143L1117 144L1106 142L1096 141L1089 144L1080 148L1070 150L1062 147L1055 141L1048 138L1038 137L1027 135L1017 132L1010 126L1002 120L994 113L990 105L994 96L1007 89L1020 84L1027 80L1029 74L1030 67L1033 62L1038 56L1043 49L1049 41L1058 35L1069 35L1080 39L1090 41L1100 41L1111 40L1122 43L1128 50L1132 58L1135 65L1138 71L1139 78L1137 85L1137 90L1142 96Z"/><path class="hill" d="M1170 96L1184 106L1189 118L1182 127L1171 135L1161 142L1150 148L1138 152L1123 152L1111 151L1101 154L1092 161L1080 165L1068 162L1058 156L1049 151L1038 150L1024 150L1011 147L1000 141L990 134L979 127L971 118L972 106L985 96L1000 88L1010 82L1011 75L1011 67L1014 58L1019 51L1025 43L1031 33L1040 24L1053 22L1067 25L1080 28L1092 27L1106 23L1120 24L1130 31L1137 41L1142 50L1147 58L1151 66L1150 74L1150 82L1156 89L1170 96Z"/><path class="hill" d="M1202 96L1212 109L1209 122L1197 132L1185 141L1174 149L1161 156L1145 159L1129 159L1118 163L1107 171L1095 178L1080 178L1067 171L1055 165L1042 164L1026 165L1009 164L995 159L982 152L968 144L956 134L953 121L963 107L980 96L992 87L994 79L992 69L992 59L998 49L1004 40L1010 28L1018 17L1033 11L1050 12L1066 15L1080 13L1096 8L1113 6L1127 12L1137 23L1144 34L1152 43L1158 51L1161 61L1161 71L1168 79L1184 86L1202 96Z"/><path class="hill outer" d="M1234 96L1234 111L1223 124L1209 136L1198 147L1186 156L1170 162L1152 165L1138 170L1127 180L1114 190L1097 192L1080 186L1065 179L1051 177L1033 180L1013 182L995 178L979 171L963 163L946 153L938 140L944 123L961 108L975 96L977 86L972 75L970 62L974 51L981 40L986 27L994 13L1008 4L1028 2L1047 4L1063 2L1080 -6L1099 -12L1118 -9L1132 3L1143 16L1153 26L1162 35L1168 46L1171 57L1177 66L1195 73L1218 83L1234 96Z"/>
+    </svg>
+
+    <!-- The route and the stops. Each stop has its position on a wide screen (--x, --y)
+         and on a phone (--nx, --ny), in percent. -->
+    <div class="places">
+      <svg class="route route-wide" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path class="route-under" d="M2 94 Q6.25 75.25 16.5 56.5 Q32.25 71.75 42 87 Q42 68.5 48 50 Q43 32.75 32 15.5 Q42.5 10.75 59 6 Q71.5 22.5 78 39 Q81 53.5 90 68"/>
+        <path class="route-line" d="M2 94 Q6.25 75.25 16.5 56.5 Q32.25 71.75 42 87 Q42 68.5 48 50 Q43 32.75 32 15.5 Q42.5 10.75 59 6 Q71.5 22.5 78 39 Q81 53.5 90 68"/>
+      </svg>
+      <svg class="route route-narrow" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path class="route-under" d="M14 6 Q21 12 34 18 Q27 24 14 30 Q21 36 34 42 Q27 48 14 54 Q21 60 34 66 Q27 72.5 14 79 Q21 86 34 93"/>
+        <path class="route-line" d="M14 6 Q21 12 34 18 Q27 24 14 30 Q21 36 34 42 Q27 48 14 54 Q21 60 34 66 Q27 72.5 14 79 Q21 86 34 93"/>
+      </svg>
+      <a class="place" href="#about" style="--x: 2; --y: 94; --nx: 14; --ny: 6; animation-delay: 0.00s">
+        <i></i><span><b>Talland College</b>MBO Software Developer</span>
+      </a>
+      <a class="place" href="#xml" style="--x: 16.5; --y: 56.5; --nx: 34; --ny: 18; animation-delay: 0.22s">
+        <i></i><span><b>XML Hosting</b>Internship · 2024</span>
+      </a>
+      <a class="place" href="#learn" style="--x: 42; --y: 87; --nx: 14; --ny: 30; animation-delay: 0.44s">
+        <i></i><span><b>Learn &amp; Earn</b>Internship · 2024–25</span>
+      </a>
+      <a class="place" href="#about" style="--x: 48; --y: 50; --nx: 34; --ny: 42; animation-delay: 0.66s">
+        <i></i><span><b>HvA · HBO-ICT</b>2025 – now</span>
+      </a>
+      <a class="place" href="#dokkie" style="--x: 32; --y: 15.5; --nx: 14; --ny: 54; animation-delay: 0.88s">
+        <i></i><span><b>Dokkie</b>Duo project</span>
+      </a>
+      <a class="place" href="#webshop" style="--x: 59; --y: 6; --nx: 34; --ny: 66; animation-delay: 1.10s">
+        <i></i><span><b>LucaStars Webshop</b>Team project</span>
+      </a>
+      <a class="place own label-left" href="#snyptly" style="--x: 78; --y: 39; --nx: 14; --ny: 79; animation-delay: 1.32s">
+        <i></i><span><b>Snyptly</b>Own project</span>
+      </a>
+      <a class="place next label-left" href="#contact" style="--x: 90; --y: 68; --nx: 34; --ny: 93; animation-delay: 1.54s">
+        <i></i><span><b>Next stop: your team</b>Feb 2027</span>
+      </a>
+    </div>
+
+    <!-- A small compass in the corner -->
+    <svg class="compass" viewBox="-25 -42 50 67" aria-hidden="true">
+      <text y="-29" text-anchor="middle">N</text>
+      <circle r="21"/>
+      <path d="M0-15L5 0L0 15L-5 0Z"/>
+      <path class="north" d="M0-15L5 0L-5 0Z"/>
+    </svg>
+  </div>
   <div class="legend">
     <div class="tag">Looking for an internship · Feb 2027</div>
     <h1>Jason Senungi</h1>
@@ -190,19 +96,19 @@ try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(pre
 
 <aside class="rail" aria-label="Where you are on this page">
   <div class="rt">Route</div>
-  <a href="#top" data-s="top"><i></i><span>Start</span></a>
-  <a href="#snyptly" data-s="snyptly"><i class="own"></i><span>Snyptly</span></a>
-  <a href="#learn" data-s="learn"><i></i><span>Learn &amp; Earn</span></a>
-  <a href="#xml" data-s="xml"><i></i><span>XML Hosting</span></a>
-  <a href="#webshop" data-s="webshop"><i></i><span>Webshop</span></a>
-  <a href="#dokkie" data-s="dokkie"><i></i><span>Dokkie</span></a>
-  <a href="#about" data-s="about"><i></i><span>About</span></a>
-  <a href="#contact" data-s="contact"><i class="end"></i><span>Contact</span></a>
+  <a href="#top" data-section="top"><i></i><span>Start</span></a>
+  <a href="#snyptly" data-section="snyptly"><i class="own"></i><span>Snyptly</span></a>
+  <a href="#learn" data-section="learn"><i></i><span>Learn &amp; Earn</span></a>
+  <a href="#xml" data-section="xml"><i></i><span>XML Hosting</span></a>
+  <a href="#webshop" data-section="webshop"><i></i><span>Webshop</span></a>
+  <a href="#dokkie" data-section="dokkie"><i></i><span>Dokkie</span></a>
+  <a href="#about" data-section="about"><i></i><span>About</span></a>
+  <a href="#contact" data-section="contact"><i class="end"></i><span>Contact</span></a>
 </aside>
 <div class="trail">
 <main id="work">
 
-<section class="sheet" id="snyptly" data-bg="land"><div class="bg"></div><i class="stop own" aria-hidden="true"></i><div class="wrap">
+<section class="sheet" id="snyptly"><svg class="bg" aria-hidden="true"><use href="#hills"/></svg><i class="stop own" aria-hidden="true"></i><div class="wrap">
   <div class="ph">
     <div>
       <span class="kicker">Own project · 2025 – now</span>
@@ -231,9 +137,9 @@ try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(pre
     </div>
   </div>
   <div class="detect">
-    <div class="det"><svg id="sig1" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true"></svg><h3>YouTube: emotion in the transcript</h3><p>Every line gets a sentiment score, with extra points for words like “insane” or “no way”.</p></div>
-    <div class="det"><svg id="sig2" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true"></svg><h3>Twitch: chat spikes</h3><p>It looks for moments when the chat suddenly gets much busier than usual.</p></div>
-    <div class="det"><svg id="sig3" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true"></svg><h3>Kick and uploads: loudness</h3><p>FFmpeg measures the audio, and Snyptly picks the loudest peaks above the normal level.</p></div>
+    <div class="det"><svg class="sketch" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true"><polyline class="sk-line" points="0,64 30,60 60,62 90,52 120,55 150,40 175,30 195,12 215,22 240,48 270,58 300,60"/><circle class="sk-hot" cx="195" cy="12" r="7"/></svg><h3>YouTube: emotion in the transcript</h3><p>Every line gets a sentiment score, with extra points for words like “insane” or “no way”.</p></div>
+    <div class="det"><svg class="sketch" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true"><rect class="sk-bar" x="1" y="74" width="7" height="10" rx="1"/><rect class="sk-bar" x="11" y="71" width="7" height="13" rx="1"/><rect class="sk-bar" x="21" y="68" width="7" height="16" rx="1"/><rect class="sk-bar" x="31" y="65" width="7" height="19" rx="1"/><rect class="sk-bar" x="41" y="62" width="7" height="22" rx="1"/><rect class="sk-bar" x="51" y="59" width="7" height="25" rx="1"/><rect class="sk-bar" x="61" y="73" width="7" height="11" rx="1"/><rect class="sk-bar" x="71" y="70" width="7" height="14" rx="1"/><rect class="sk-bar" x="81" y="67" width="7" height="17" rx="1"/><rect class="sk-bar" x="91" y="64" width="7" height="20" rx="1"/><rect class="sk-bar" x="101" y="61" width="7" height="23" rx="1"/><rect class="sk-bar" x="111" y="58" width="7" height="26" rx="1"/><rect class="sk-bar" x="121" y="72" width="7" height="12" rx="1"/><rect class="sk-bar" x="131" y="69" width="7" height="15" rx="1"/><rect class="sk-bar" x="141" y="66" width="7" height="18" rx="1"/><rect class="sk-bar" x="151" y="63" width="7" height="21" rx="1"/><rect class="sk-bar" x="161" y="60" width="7" height="24" rx="1"/><rect class="sk-bar" x="171" y="74" width="7" height="10" rx="1"/><rect class="sk-hot" x="181" y="32" width="7" height="52" rx="1"/><rect class="sk-hot" x="191" y="10" width="7" height="74" rx="1"/><rect class="sk-hot" x="201" y="20" width="7" height="64" rx="1"/><rect class="sk-hot" x="211" y="46" width="7" height="38" rx="1"/><rect class="sk-bar" x="221" y="59" width="7" height="25" rx="1"/><rect class="sk-bar" x="231" y="73" width="7" height="11" rx="1"/><rect class="sk-bar" x="241" y="70" width="7" height="14" rx="1"/><rect class="sk-bar" x="251" y="67" width="7" height="17" rx="1"/><rect class="sk-bar" x="261" y="64" width="7" height="20" rx="1"/><rect class="sk-bar" x="271" y="61" width="7" height="23" rx="1"/><rect class="sk-bar" x="281" y="58" width="7" height="26" rx="1"/><rect class="sk-bar" x="291" y="72" width="7" height="12" rx="1"/></svg><h3>Twitch: chat spikes</h3><p>It looks for moments when the chat suddenly gets much busier than usual.</p></div>
+    <div class="det"><svg class="sketch" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true"><line class="sk-wave" x1="0" x2="0" y1="36" y2="48"/><line class="sk-wave" x1="4" x2="4" y1="35" y2="49"/><line class="sk-wave" x1="8" x2="8" y1="35" y2="49"/><line class="sk-wave" x1="12" x2="12" y1="34" y2="50"/><line class="sk-wave" x1="16" x2="16" y1="34" y2="50"/><line class="sk-wave" x1="20" x2="20" y1="33" y2="51"/><line class="sk-wave" x1="24" x2="24" y1="33" y2="51"/><line class="sk-wave" x1="28" x2="28" y1="32" y2="52"/><line class="sk-wave" x1="32" x2="32" y1="32" y2="52"/><line class="sk-wave" x1="36" x2="36" y1="31" y2="53"/><line class="sk-wave" x1="40" x2="40" y1="31" y2="53"/><line class="sk-wave" x1="44" x2="44" y1="30" y2="54"/><line class="sk-wave" x1="48" x2="48" y1="30" y2="54"/><line class="sk-wave" x1="52" x2="52" y1="36" y2="48"/><line class="sk-wave" x1="56" x2="56" y1="35" y2="49"/><line class="sk-wave" x1="60" x2="60" y1="35" y2="49"/><line class="sk-wave" x1="64" x2="64" y1="34" y2="50"/><line class="sk-wave" x1="68" x2="68" y1="34" y2="50"/><line class="sk-wave" x1="72" x2="72" y1="33" y2="51"/><line class="sk-wave" x1="76" x2="76" y1="33" y2="51"/><line class="sk-wave" x1="80" x2="80" y1="32" y2="52"/><line class="sk-wave" x1="84" x2="84" y1="32" y2="52"/><line class="sk-wave" x1="88" x2="88" y1="31" y2="53"/><line class="sk-wave" x1="92" x2="92" y1="31" y2="53"/><line class="sk-wave" x1="96" x2="96" y1="30" y2="54"/><line class="sk-wave" x1="100" x2="100" y1="30" y2="54"/><line class="sk-wave" x1="104" x2="104" y1="36" y2="48"/><line class="sk-wave" x1="108" x2="108" y1="35" y2="49"/><line class="sk-wave" x1="112" x2="112" y1="35" y2="49"/><line class="sk-wave" x1="116" x2="116" y1="34" y2="50"/><line class="sk-wave" x1="120" x2="120" y1="34" y2="50"/><line class="sk-wave" x1="124" x2="124" y1="33" y2="51"/><line class="sk-wave" x1="128" x2="128" y1="33" y2="51"/><line class="sk-wave" x1="132" x2="132" y1="32" y2="52"/><line class="sk-wave" x1="136" x2="136" y1="32" y2="52"/><line class="sk-wave" x1="140" x2="140" y1="31" y2="53"/><line class="sk-wave" x1="144" x2="144" y1="31" y2="53"/><line class="sk-wave" x1="148" x2="148" y1="30" y2="54"/><line class="sk-wave" x1="152" x2="152" y1="30" y2="54"/><line class="sk-wave" x1="156" x2="156" y1="36" y2="48"/><line class="sk-wave" x1="160" x2="160" y1="35" y2="49"/><line class="sk-wave" x1="164" x2="164" y1="35" y2="49"/><line class="sk-wave" x1="168" x2="168" y1="34" y2="50"/><line class="sk-wave" x1="172" x2="172" y1="34" y2="50"/><line class="sk-wave" x1="176" x2="176" y1="33" y2="51"/><line class="sk-wave hot" x1="180" x2="180" y1="7" y2="77"/><line class="sk-wave hot" x1="184" x2="184" y1="11" y2="73"/><line class="sk-wave hot" x1="188" x2="188" y1="4" y2="80"/><line class="sk-wave hot" x1="192" x2="192" y1="8" y2="76"/><line class="sk-wave hot" x1="196" x2="196" y1="12" y2="72"/><line class="sk-wave hot" x1="200" x2="200" y1="5" y2="79"/><line class="sk-wave hot" x1="204" x2="204" y1="9" y2="75"/><line class="sk-wave" x1="208" x2="208" y1="36" y2="48"/><line class="sk-wave" x1="212" x2="212" y1="35" y2="49"/><line class="sk-wave" x1="216" x2="216" y1="35" y2="49"/><line class="sk-wave" x1="220" x2="220" y1="34" y2="50"/><line class="sk-wave" x1="224" x2="224" y1="34" y2="50"/><line class="sk-wave" x1="228" x2="228" y1="33" y2="51"/><line class="sk-wave" x1="232" x2="232" y1="33" y2="51"/><line class="sk-wave" x1="236" x2="236" y1="32" y2="52"/><line class="sk-wave" x1="240" x2="240" y1="32" y2="52"/><line class="sk-wave" x1="244" x2="244" y1="31" y2="53"/><line class="sk-wave" x1="248" x2="248" y1="31" y2="53"/><line class="sk-wave" x1="252" x2="252" y1="30" y2="54"/><line class="sk-wave" x1="256" x2="256" y1="30" y2="54"/><line class="sk-wave" x1="260" x2="260" y1="36" y2="48"/><line class="sk-wave" x1="264" x2="264" y1="35" y2="49"/><line class="sk-wave" x1="268" x2="268" y1="35" y2="49"/><line class="sk-wave" x1="272" x2="272" y1="34" y2="50"/><line class="sk-wave" x1="276" x2="276" y1="34" y2="50"/><line class="sk-wave" x1="280" x2="280" y1="33" y2="51"/><line class="sk-wave" x1="284" x2="284" y1="33" y2="51"/><line class="sk-wave" x1="288" x2="288" y1="32" y2="52"/><line class="sk-wave" x1="292" x2="292" y1="32" y2="52"/><line class="sk-wave" x1="296" x2="296" y1="31" y2="53"/><line class="sk-normal" x1="0" x2="300" y1="24" y2="24"/></svg><h3>Kick and uploads: loudness</h3><p>FFmpeg measures the audio, and Snyptly picks the loudest peaks above the normal level.</p></div>
   </div>
   <div class="mosaic">
     <figure><div class="shot" data-c="“5 moments worth posting”: the highlights it found"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>Highlights found</span></div><img src="img/results.webp" alt="The highlights Snyptly found" loading="lazy"></div></figure>
@@ -244,7 +150,7 @@ try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(pre
   </div>
 </div></section>
 
-<section class="sheet sea" id="learn" data-bg="sea"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap">
+<section class="sheet sea" id="learn"><svg class="bg" aria-hidden="true"><use href="#waves"/></svg><i class="stop" aria-hidden="true"></i><div class="wrap">
   <div class="ph">
     <div>
       <span class="kicker">MBO internship · 2024 – 2025</span>
@@ -265,12 +171,12 @@ try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(pre
     <li>Tested it in the Android emulator and redesigned the whole interface</li>
   </ul>
   <div class="ba">
-    <div><h3>First version <span class="pill">before</span></h3><div class="row3" data-p="old_activities|First version: activities,old_wordsearch|First version: word search,old_games|First version: games"></div></div>
-    <div><h3>Calmer and clearer <span class="pill m">after feedback</span></h3><div class="row3" data-p="new_login|New version: sign in,new_home|New version: home screen,new_wordsearch|New version: word search"></div></div>
+    <div><h3>First version <span class="pill">before</span></h3><div class="row3"><figure><div class="shot" data-c="First version: activities"><img src="img/old_activities.webp" alt="First version: activities" loading="lazy"></div></figure><figure><div class="shot" data-c="First version: word search"><img src="img/old_wordsearch.webp" alt="First version: word search" loading="lazy"></div></figure><figure><div class="shot" data-c="First version: games"><img src="img/old_games.webp" alt="First version: games" loading="lazy"></div></figure></div></div>
+    <div><h3>Calmer and clearer <span class="pill m">after feedback</span></h3><div class="row3"><figure><div class="shot" data-c="New version: sign in"><img src="img/new_login.webp" alt="New version: sign in" loading="lazy"></div></figure><figure><div class="shot" data-c="New version: home screen"><img src="img/new_home.webp" alt="New version: home screen" loading="lazy"></div></figure><figure><div class="shot" data-c="New version: word search"><img src="img/new_wordsearch.webp" alt="New version: word search" loading="lazy"></div></figure></div></div>
   </div>
 </div></section>
 
-<section class="sheet" id="xml" data-bg="land"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap">
+<section class="sheet" id="xml"><svg class="bg" aria-hidden="true"><use href="#hills"/></svg><i class="stop" aria-hidden="true"></i><div class="wrap">
   <div class="ph">
     <div>
       <span class="kicker">MBO internship · Feb – Jul 2024</span>
@@ -293,7 +199,7 @@ try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(pre
   <div class="gal" data-g="xml"></div>
 </div></section>
 
-<section class="sheet sea" id="webshop" data-bg="sea"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap">
+<section class="sheet sea" id="webshop"><svg class="bg" aria-hidden="true"><use href="#waves"/></svg><i class="stop" aria-hidden="true"></i><div class="wrap">
   <div class="ph">
     <div>
       <span class="kicker">HBO team project · HBO-ICT</span>
@@ -321,7 +227,7 @@ try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(pre
   <div class="gal" data-g="webshop"></div>
 </div></section>
 
-<section class="sheet" id="dokkie" data-bg="land"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap">
+<section class="sheet" id="dokkie"><svg class="bg" aria-hidden="true"><use href="#hills"/></svg><i class="stop" aria-hidden="true"></i><div class="wrap">
   <div class="ph">
     <div>
       <span class="kicker">HBO duo project · HBO-ICT</span>
@@ -355,7 +261,7 @@ try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(pre
 </div></section>
 </main>
 
-<section class="sheet sea" id="about" data-bg="sea"><div class="bg"></div><i class="stop" aria-hidden="true"></i><div class="wrap about">
+<section class="sheet sea" id="about"><svg class="bg" aria-hidden="true"><use href="#waves"/></svg><i class="stop" aria-hidden="true"></i><div class="wrap about">
   <div>
     <span class="kicker">The traveller</span>
     <h2>About me</h2>
@@ -378,7 +284,7 @@ try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(pre
   </div>
 </div></section>
 
-<section class="sheet contact" id="contact" data-bg="land"><div class="bg"></div><i class="stop end" aria-hidden="true"></i><div class="wrap"><div class="card">
+<section class="sheet contact" id="contact"><svg class="bg" aria-hidden="true"><use href="#hills"/></svg><i class="stop end" aria-hidden="true"></i><div class="wrap"><div class="card">
   <svg class="dest" viewBox="0 0 520 90" aria-hidden="true"><path class="rt" d="M10,70 Q120,10 220,50 T420,40"/><circle class="st" cx="10" cy="70" r="8"/><rect class="ow" x="200" y="36" width="16" height="16" transform="rotate(45 208 44)"/><circle class="en" cx="440" cy="40" r="17"/><text x="440" y="84" text-anchor="middle">your team</text></svg>
   <h2>Next stop: your team?</h2>
   <p>I’m looking for an internship from February 2027. Want to know more, or see the Snyptly code? Send me a message.</p>
@@ -389,130 +295,10 @@ try{const t=localStorage.getItem('jsTheme');if(t==='dark'||(!t&&matchMedia('(pre
 </div></div></section>
 </div>
 
-<footer><span>© 2026 Jason Senungi</span><span>Built with HTML, CSS and JavaScript</span></footer>
+<footer><span>© 2026 Jason Senungi</span><span>Built with HTML, CSS and TypeScript</span></footer>
 
 <dialog id="zoom"><button type="button" aria-label="Close">×</button><img alt=""><p></p></dialog>
 
-<script>
-{
-const body=document.body;
-const css=n=>getComputedStyle(body).getPropertyValue(n).trim()||'#000';
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function blob(cx,cy,r,seed,k=1,sx=1.35){let d='';for(let i=0;i<=64;i++){const a=i/64*Math.PI*2;const rr=r*(1+.18*Math.sin(3*a+seed)*k+.09*Math.sin(5*a+seed*2)+.05*Math.sin(9*a+seed*3));d+=(i?'L':'M')+(cx+Math.cos(a)*rr*sx).toFixed(1)+','+(cy+Math.sin(a)*rr).toFixed(1)}return d+'Z'}
-
-/* ---------- hero map ---------- */
-const stops=[
- {t:'Talland College',s:'MBO Software Developer',w:[.46,.82],n:[.14,.06],h:'#about'},
- {t:'XML Hosting',s:'Internship · 2024',w:[.53,.56],n:[.34,.18],h:'#xml'},
- {t:'Learn & Earn',s:'Internship · 2024–25',w:[.62,.80],n:[.14,.30],h:'#learn'},
- {t:'HvA · HBO-ICT',s:'2025 – now',w:[.69,.50],n:[.34,.42],h:'#about'},
- {t:'Dokkie',s:'Duo project',w:[.61,.26],n:[.14,.54],h:'#dokkie'},
- {t:'LucaStars Webshop',s:'Team project',w:[.75,.19],n:[.34,.66],h:'#webshop'},
- {t:'Snyptly',s:'Own project',w:[.85,.43],n:[.14,.79],h:'#snyptly',own:true},
- {t:'Next stop: your team',s:'Feb 2027',w:[.90,.76],n:[.34,.93],h:'#contact',next:true}];
-const svg=document.getElementById('mapsvg'),box=document.getElementById('map');
-let drawn=false;
-function drawMap(){
-  const W=box.clientWidth,H=box.clientHeight;if(!W||!H)return;
-  const narrow=W<760,land=css('--land'),sea=css('--sea'),brown=css('--brown'),ink=css('--ink'),mag=css('--mag'),card=css('--card'),wave=css('--wave');
-  let o=`<rect width="${W}" height="${H}" fill="${land}"/>`;
-  let coast=`M${W},0 `;for(let i=0;i<=40;i++){const y=i/40*H;const x=W*(narrow?.86:.95)-Math.sin(i*.55)*W*.025-Math.sin(i*1.7)*W*.01-(narrow?0:(i/40)*W*.06);coast+=`L${x.toFixed(1)},${y.toFixed(1)} `}
-  coast+=`L${W},${H} Z`;
-  o+=`<path d="${coast}" fill="${sea}"/>`;
-  for(let k=1;k<=3;k++)o+=`<path d="${coast}" fill="none" stroke="${wave}" stroke-width="1.5" transform="translate(${-k*10},0)" opacity="${.8-k*.2}"/>`;
-  const hills=narrow?[[.75,.2,.16,1],[.7,.62,.2,4],[.2,.9,.14,7]]:[[.32,.22,.15,1],[.63,.38,.17,4],[.78,.88,.12,7],[.15,.8,.13,9],[.9,.12,.08,11]];
-  for(const [hx,hy,hr,sd] of hills)for(let r=1;r<=7;r++)o+=`<path d="${blob(hx*W,hy*H,hr*Math.min(W,H*1.6)*r/7,sd+r*.3,1-r*.05)}" fill="none" stroke="${brown}" stroke-width="${r===7?1.6:1}" opacity="${r===7?.55:.33}"/>`;
-  for(let i=1;i<10;i++){const x=W*i/10;o+=`<line x1="${x}" x2="${x}" y1="${H-10}" y2="${H}" stroke="${ink}" opacity=".4"/>`}
-  const P=stops.map(s=>{const [x,y]=narrow?s.n:s.w;return[x*W,y*H]});
-  let d=`M${P[0][0]},${P[0][1]}`;for(let i=1;i<P.length;i++){const [x0,y0]=P[i-1],[x1,y1]=P[i];const mx=(x0+x1)/2+(i%2?-1:1)*Math.min(W,H)*.04;d+=` Q${mx.toFixed(1)},${((y0+y1)/2).toFixed(1)} ${x1.toFixed(1)},${y1.toFixed(1)}`}
-  o+=`<path d="${d}" fill="none" stroke="${land}" stroke-width="10" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${mag}" stroke-width="4" stroke-dasharray="10 8" stroke-linecap="round" class="${drawn?'':'route-anim'}"/>`;
-  const fs=narrow?14:15;
-  stops.forEach((s,i)=>{const [x,y]=P[i];
-    const mark=s.own?`<rect x="${x-11}" y="${y-11}" width="22" height="22" fill="${mag}" transform="rotate(45 ${x} ${y})"/>`:s.next?`<circle cx="${x}" cy="${y}" r="12" fill="${card}" stroke="${mag}" stroke-width="4" stroke-dasharray="4 3"/>`:`<circle cx="${x}" cy="${y}" r="10" fill="${card}" stroke="${ink}" stroke-width="4"/>`;
-    const left=!narrow&&x>W*.8,tx=left?x-20:x+20,anc=left?'end':'start';
-    o+=`<a class="wp${drawn?'':' anim'}" style="animation-delay:${(i*.22).toFixed(2)}s" href="${s.h}" aria-label="${esc(s.t)}">${mark}<text x="${tx}" y="${y-2}" text-anchor="${anc}" font-family="Overpass,sans-serif" font-weight="800" font-size="${fs}" fill="${ink}" stroke="${land}" stroke-width="5" paint-order="stroke">${esc(s.t)}</text><text x="${tx}" y="${y+fs+1}" text-anchor="${anc}" font-family="Overpass,sans-serif" font-size="${fs-2}" fill="${s.next||s.own?mag:brown}" stroke="${land}" stroke-width="4" paint-order="stroke">${esc(s.s)}</text></a>`});
-  const cx=narrow?W-34:W-50,cy=narrow?H-40:H-58;
-  o+=`<g transform="translate(${cx},${cy})"><circle r="21" fill="${card}" stroke="${ink}" stroke-width="2"/><path d="M0,-15 L5,0 L0,15 L-5,0Z" fill="${ink}"/><path d="M0,-15 L5,0 L-5,0Z" fill="${mag}"/><text y="-27" text-anchor="middle" font-family="Overpass" font-weight="800" font-size="12" fill="${ink}">N</text></g>`;
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=o;
-  if(!drawn)setTimeout(()=>{drawn=true},2500);
-}
-
-/* ---------- map backgrounds in every sheet ---------- */
-function drawBgs(){
-  const brown=css('--brown'),wave=css('--wave');
-  document.querySelectorAll('.sheet').forEach((s,idx)=>{
-    const bg=s.querySelector(':scope>.bg');const W=s.clientWidth,H=s.clientHeight;if(!W||!H)return;
-    let o='';
-    if(s.dataset.bg==='sea'){
-      for(let y=30;y<H;y+=46){let d=`M0,${y}`;for(let x=0;x<=W;x+=40)d+=` Q${x+20},${y+(((x/40)+idx)%2?7:-7)} ${x+40},${y}`;o+=`<path d="${d}" fill="none" stroke="${wave}" stroke-width="1.4" opacity=".55"/>`}
-    }else{
-      const hills=[[W*.92,H*.12,Math.min(W,H)*.32,idx*2.1+1],[W*.08,H*.86,Math.min(W,H)*.28,idx*1.7+4],[W*.6,H*.55,Math.min(W,H)*.22,idx*1.3+7]];
-      for(const [hx,hy,hr,sd] of hills)for(let r=1;r<=8;r++)o+=`<path d="${blob(hx,hy,hr*r/8,sd+r*.25,1-r*.05,1.25)}" fill="none" stroke="${brown}" stroke-width="${r===8?1.5:1}" opacity="${r===8?.32:.2}"/>`;
-    }
-    bg.innerHTML=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${o}</svg>`;
-  });
-}
-
-/* ---------- Snyptly signal sketches ---------- */
-function drawSigs(){
-  const mag=css('--mag'),ink=css('--ink');
-  document.getElementById('sig1').innerHTML=`<polyline fill="none" stroke="${ink}" stroke-width="2.5" opacity=".7" points="0,64 30,60 60,62 90,52 120,55 150,40 175,30 195,12 215,22 240,48 270,58 300,60"/><circle cx="195" cy="12" r="7" fill="${mag}"/>`;
-  let b='';for(let i=0;i<30;i++){const pk=i>=18&&i<=21;const h=pk?[52,74,64,38][i-18]:10+((i*37)%17);b+=`<rect x="${i*10+1}" y="${84-h}" width="7" height="${h}" rx="1" fill="${pk?mag:ink}" opacity="${pk?1:.45}"/>`}
-  document.getElementById('sig2').innerHTML=b;
-  let w='';for(let i=0;i<75;i++){const x=i*4,ld=i>44&&i<52,h=ld?28+((i*7)%11):((8+((i*53)%13))/2+2);w+=`<line x1="${x}" x2="${x}" y1="${42-h}" y2="${42+h}" stroke="${ld?mag:ink}" stroke-width="2.4" stroke-linecap="round" opacity="${ld?1:.45}"/>`}
-  document.getElementById('sig3').innerHTML=w+`<line x1="0" x2="300" y1="24" y2="24" stroke="${ink}" stroke-dasharray="4 4" opacity=".4"/>`;
-}
-function redrawAll(){drawMap();drawBgs();drawSigs()}
-
-/* ---------- theme toggle ---------- */
-const tb=document.getElementById('theme'),ticon=document.getElementById('ticon'),tlabel=document.getElementById('tlabel');
-const MOON='<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/>';
-const SUN='<circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>';
-function syncTheme(){const d=body.classList.contains('dark');ticon.innerHTML=d?SUN:MOON;tlabel.textContent=d?'Light':'Dark';tb.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode')}
-tb.addEventListener('click',()=>{body.classList.toggle('dark');try{localStorage.setItem('jsTheme',body.classList.contains('dark')?'dark':'light')}catch(_){}syncTheme();redrawAll()});
-syncTheme();
-
-/* ---------- galleries ---------- */
-const G={
- xml:[['shopify-theme-editor','Customising a Shopify theme'],['shopify-productpagina','A product page in the webshop'],['product-listing-varianten','Setting up a product with variants'],['vakantiewebsite-spanjeparadores','Travel website SpanjeParadores.nl'],['php-adminpaneel-pagina-overzicht','The PHP admin panel']],
- webshop:[['winkelwagen-verwijderen-bevestigen','A confirmation before removing a game'],['winkelwagen-item-verwijderd','A message with the updated total'],['verwijderen-ontwerp','My sketch of removing an item'],['webshop-homepage','The homepage (built by the team)'],['webshop-browse','Browsing games (built by the team)']],
- dokkie:[['1-dokkie-homepage','The homepage'],['4-evenement-detail','An event with participants, expenses and payments'],['6-deelnemers-overzicht','Participants with their share and whether they’ve paid'],['8-betalingen-overzicht','The payments overview']]};
-document.querySelectorAll('.gal').forEach(g=>{
-  g.innerHTML=`<div class="track" tabindex="0" aria-label="Screenshots">${G[g.dataset.g].map(([f,c])=>`<figure><div class="shot" data-c="${esc(c)}"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(c)}</span></div><img src="img/${f}.webp" alt="${esc(c)}" loading="lazy"></div><figcaption>${esc(c)}</figcaption></figure>`).join('')}</div><div class="galnav"><button type="button" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><button type="button" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>`;
-  const tr=g.querySelector('.track'),[p,n]=g.querySelectorAll('.galnav button');
-  const step=d=>tr.scrollBy({left:d*tr.clientWidth*.8,behavior:'smooth'});
-  p.onclick=()=>step(-1);n.onclick=()=>step(1);
-  tr.addEventListener('keydown',e=>{if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1)});
-});
-document.querySelectorAll('.row3').forEach(r=>{r.innerHTML=r.dataset.p.split(',').map(x=>{const[f,c]=x.split('|');return `<figure><div class="shot" data-c="${esc(c)}"><img src="img/${f}.webp" alt="${esc(c)}" loading="lazy"></div></figure>`}).join('')});
-
-/* ---------- nav highlight ---------- */
-const navLinks=[...document.querySelectorAll('.nav .links a')];
-let tick=false;
-function navUpdate(){tick=false;const line=innerHeight*.35;let cur='';
-  for(const id of ['work','about','contact']){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=line)cur=id}
-  if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)cur='contact';
-  navLinks.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur))}
-addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(navUpdate)}},{passive:true});navUpdate();
-
-
-/* ---------- route rail ---------- */
-const rail=[...document.querySelectorAll('.rail a')];
-const railSecs=rail.map(a=>document.getElementById(a.dataset.s)).filter(Boolean);
-function railUpdate(){const line=innerHeight*.4;let cur='top';
-  for(const t of railSecs){if(t.getBoundingClientRect().top<=line)cur=t.id}
-  if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)cur='contact';
-  rail.forEach(a=>a.classList.toggle('on',a.dataset.s===cur))}
-addEventListener('scroll',()=>requestAnimationFrame(railUpdate),{passive:true});addEventListener('resize',railUpdate);railUpdate();
-/* ---------- zoom ---------- */
-const dlg=document.getElementById('zoom'),zi=dlg.querySelector('img'),zp=dlg.querySelector('p');
-document.addEventListener('click',e=>{const s=e.target.closest('.shot');if(!s)return;const im=s.querySelector('img');zi.src=im.src;zi.alt=im.alt;zp.textContent=s.dataset.c||im.alt;try{dlg.showModal()}catch(_){}});
-dlg.querySelector('button').onclick=()=>dlg.close();
-dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
-
-const ro=new ResizeObserver(()=>{drawMap();drawBgs()});ro.observe(box);document.querySelectorAll('.sheet').forEach(s=>ro.observe(s));
-drawSigs();
-}
-</script>
+<script type="module" src="/src/main.ts"></script>
 </body>
 </html>
