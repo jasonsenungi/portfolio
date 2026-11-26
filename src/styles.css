@@ -1,0 +1,1422 @@
+/* Styles for my portfolio site.
+   The colours for light mode come first, then the dark mode colours.
+   Colours: land, sea, contour brown, ink and a magenta route, with a dark (night) version. */
+body {
+  --land: #fbfbf2;
+  --land2: #f1f1e3;
+  --sea: #cbe9f2;
+  --sea2: #a9d7e6;
+  --ink: #13242e;
+  --mute: #4d5f68;
+  --brown: #a8551b;
+  --mag: #d6127e;
+  --card: #ffffff;
+  --shadow: #13242e;
+  --wave: #8cc6d8;
+}
+
+body.dark {
+  --land: #0d1c24;
+  --land2: #12262f;
+  --sea: #0f2c39;
+  --sea2: #16404f;
+  --ink: #e9f1ee;
+  --mute: #a3b8bf;
+  --brown: #d08a55;
+  --mag: #ff4fa6;
+  --card: #132a35;
+  --shadow: #000000;
+  --wave: #2a6175;
+}
+
+/* basics */
+* {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+body {
+  margin: 0;
+  background: var(--land);
+  color: var(--ink);
+  font:
+    17px/1.6 Overpass,
+    system-ui,
+    sans-serif;
+  overflow-x: clip;
+  transition:
+    background 0.3s,
+    color 0.3s;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 900;
+  line-height: 1.02;
+  text-wrap: balance;
+  margin: 0;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--mag);
+  outline-offset: 3px;
+}
+
+/* buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 800;
+  background: var(--card);
+  color: var(--ink);
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 var(--ink);
+}
+
+.btn.mag {
+  background: var(--mag);
+  border-color: var(--mag);
+  color: #fff;
+}
+
+/* the floating navigation bar */
+.nav {
+  position: fixed;
+  z-index: 50;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1120px, calc(100% - 24px));
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 8px 8px 8px 20px;
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 0 6px 0 var(--shadow);
+}
+
+.logo {
+  font-weight: 900;
+  font-size: 18px;
+  text-decoration: none;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.logo i {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--mag);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--mag) 25%, transparent);
+}
+
+.nav .links {
+  display: flex;
+  gap: 4px;
+}
+
+.nav .links a {
+  text-decoration: none;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+.nav .links a:hover,
+.nav .links a.on {
+  background: var(--land2);
+}
+
+.theme {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 14px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--land2);
+  color: var(--ink);
+  font:
+    800 14px Overpass,
+    sans-serif;
+  cursor: pointer;
+}
+
+.theme svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* show the moon in light mode and the sun in dark mode */
+.theme .sun,
+body.dark .theme .moon {
+  display: none;
+}
+
+body.dark .theme .sun {
+  display: block;
+}
+
+.theme:hover {
+  background: var(--mag);
+  border-color: var(--mag);
+  color: #fff;
+}
+
+.nav .btn {
+  min-height: 42px;
+}
+
+/* the top of the page with the map */
+.hero {
+  position: relative;
+  min-height: min(92vh, 820px);
+  border-bottom: 3px solid var(--ink);
+  overflow: hidden;
+}
+
+.map {
+  position: absolute;
+  inset: 0;
+}
+
+/* the background drawing fills the whole map */
+.map-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.legend {
+  position: relative;
+  z-index: 2;
+  max-width: 440px;
+  margin: 118px 0 48px max(5vw, 16px);
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  padding: 30px 30px 24px;
+  box-shadow: 10px 10px 0 var(--shadow);
+}
+
+.legend .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  background: var(--mag);
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.legend h1 {
+  font-size: clamp(46px, 6vw, 72px);
+  letter-spacing: -0.02em;
+}
+
+.legend p {
+  color: var(--mute);
+  margin: 14px 0 22px;
+  font-size: 18px;
+}
+
+.legend p b {
+  color: var(--ink);
+}
+
+.cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.key {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 2px dashed color-mix(in srgb, var(--ink) 30%, transparent);
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--mute);
+}
+
+.key span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.key .r {
+  width: 26px;
+  border-top: 3px dashed var(--mag);
+}
+
+.key .w {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 3px solid var(--ink);
+}
+
+.key .s {
+  width: 13px;
+  height: 13px;
+  background: var(--mag);
+  transform: rotate(45deg);
+}
+
+/* colours of the map drawing */
+.map .land {
+  fill: var(--land);
+}
+
+.map .sea {
+  fill: var(--sea);
+}
+
+.map .coast {
+  fill: none;
+  stroke: var(--wave);
+  stroke-width: 1.5;
+}
+
+.map .hill {
+  fill: none;
+  stroke: var(--brown);
+  stroke-width: 1;
+  opacity: 0.33;
+}
+
+.map .hill.outer {
+  stroke-width: 1.6;
+  opacity: 0.55;
+}
+
+/* the box with the route and the stops, to the right of the name card */
+.places {
+  position: absolute;
+  top: 110px;
+  bottom: 60px;
+  left: calc(max(5vw, 16px) + 520px);
+  right: max(7vw, 70px);
+}
+
+.route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.route-narrow {
+  display: none;
+}
+
+/* non-scaling-stroke keeps the line the same thickness when the box is stretched */
+.route-under {
+  fill: none;
+  stroke: var(--land);
+  stroke-width: 10;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.route-line {
+  fill: none;
+  stroke: var(--mag);
+  stroke-width: 4;
+  stroke-dasharray: 10 8;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  /* first the route fades in, then the dashes keep moving along it */
+  animation:
+    drawin 2.2s ease-out both,
+    march 1s linear 2.2s infinite;
+}
+
+/* one stop: a dot with the name and subtitle next to it */
+.place {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  transform: translate(-12px, -50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  white-space: nowrap;
+  animation: pop 0.5s both;
+}
+
+/* stops near the right edge put their label on the left */
+.place.label-left {
+  flex-direction: row-reverse;
+  text-align: right;
+  transform: translate(calc(-100% + 12px), -50%);
+}
+
+.place i {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 4px solid var(--ink);
+}
+
+.place.own i {
+  border-radius: 3px;
+  background: var(--mag);
+  border-color: var(--mag);
+  transform: rotate(45deg) scale(0.9);
+}
+
+.place.next i {
+  border-color: var(--mag);
+  border-style: dashed;
+  /* the next stop slowly pulses, like a "you are going here" marker */
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.place span {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  line-height: 1.25;
+  color: var(--brown);
+  /* a glow in the land colour, so the text stays readable on top of the lines */
+  text-shadow: 0 0 3px var(--land), 0 0 3px var(--land), 0 0 3px var(--land);
+}
+
+.place b {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.place.own span,
+.place.next span {
+  color: var(--mag);
+}
+
+.place:hover b {
+  color: var(--mag);
+}
+
+/* the compass in the bottom-right corner */
+.compass {
+  position: absolute;
+  right: 26px;
+  bottom: 20px;
+  width: 50px;
+}
+
+.compass circle {
+  fill: var(--card);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.compass path {
+  fill: var(--ink);
+}
+
+.compass .north {
+  fill: var(--mag);
+}
+
+.compass text {
+  font: 800 12px Overpass, sans-serif;
+  fill: var(--ink);
+}
+
+/* the three small Snyptly graphics */
+.sketch .sk-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  opacity: 0.7;
+}
+
+.sketch .sk-bar {
+  fill: var(--ink);
+  opacity: 0.45;
+}
+
+.sketch .sk-hot {
+  fill: var(--mag);
+}
+
+.sketch .sk-wave {
+  stroke: var(--ink);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+.sketch .sk-wave.hot {
+  stroke: var(--mag);
+  opacity: 1;
+}
+
+.sketch .sk-normal {
+  stroke: var(--ink);
+  stroke-dasharray: 4 4;
+  opacity: 0.4;
+}
+
+/* the route down the page */
+.trail {
+  position: relative;
+}
+
+.trail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(max(5vw, 16px) + 11px);
+  border-left: 4px dashed var(--mag);
+  z-index: 1;
+  opacity: 0.9;
+}
+
+.sheet {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(64px, 8vw, 120px) max(5vw, 16px) clamp(64px, 8vw, 120px)
+    calc(max(5vw, 16px) + 60px);
+}
+
+.sheet.sea {
+  background: var(--sea);
+}
+
+/* the map pattern behind each section (hills on land, waves on sea) */
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  color: var(--brown);
+}
+
+.sea .bg {
+  color: var(--wave);
+}
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.stop {
+  position: absolute;
+  left: calc(max(5vw, 16px) - 2px);
+  margin-top: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 5px solid var(--ink);
+  z-index: 2;
+}
+
+.stop.own {
+  border-radius: 4px;
+  background: var(--mag);
+  border-color: var(--mag);
+  transform: rotate(45deg) scale(0.86);
+}
+
+.stop.end {
+  border-color: var(--mag);
+  border-style: dashed;
+}
+
+.kicker {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--brown);
+  margin-bottom: 10px;
+}
+
+/* project sheet layout */
+.ph {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+  margin-bottom: 44px;
+}
+
+.ph h2 {
+  font-size: clamp(40px, 6vw, 72px);
+  letter-spacing: -0.02em;
+}
+
+.lead {
+  font-size: clamp(18px, 1.7vw, 21px);
+  margin: 18px 0 0;
+  max-width: 56ch;
+}
+
+.tblock {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 8px 8px 0 var(--shadow);
+  overflow: hidden;
+}
+
+.tblock .t {
+  background: var(--ink);
+  color: var(--land);
+  font-weight: 800;
+  font-size: 13px;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tblock dl {
+  margin: 0;
+  padding: 6px 16px;
+}
+
+.tblock dl div {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  font-size: 15px;
+}
+
+.tblock dl div:last-child {
+  border: 0;
+}
+
+.tblock dt {
+  font-weight: 800;
+}
+
+.tblock dd {
+  margin: 0;
+  color: var(--mute);
+}
+
+.did {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 32px;
+  list-style: none;
+  margin: 0 0 44px;
+  padding: 0;
+}
+
+.did li {
+  padding-left: 28px;
+  position: relative;
+}
+
+.did li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.45em;
+  width: 12px;
+  height: 12px;
+  background: var(--mag);
+  transform: rotate(45deg);
+}
+
+.note {
+  font-size: 15px;
+  color: var(--mute);
+  margin: -24px 0 44px;
+  padding: 10px 16px;
+  border-left: 4px solid var(--brown);
+  background: color-mix(in srgb, var(--card) 70%, transparent);
+  border-radius: 0 8px 8px 0;
+  max-width: 70ch;
+}
+
+.shot {
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card);
+  cursor: zoom-in;
+  box-shadow: 7px 7px 0 var(--shadow);
+  transition: transform 0.15s;
+}
+
+.shot:hover {
+  transform: translate(-2px, -2px);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border-bottom: 2px solid var(--ink);
+  background: var(--land2);
+}
+
+.bar i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+}
+
+.bar i:first-child {
+  background: var(--mag);
+  border-color: var(--mag);
+}
+
+.bar span {
+  margin-left: 8px;
+  font-size: 13px;
+  color: var(--mute);
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+figure {
+  margin: 0;
+}
+
+figcaption {
+  font-size: 15px;
+  color: var(--mute);
+  margin-top: 12px;
+}
+
+/* the Snyptly section */
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.feature h3 {
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.detect {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.det {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 6px 6px 0 var(--shadow);
+}
+
+.det svg {
+  width: 100%;
+  height: 84px;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.det p {
+  margin: 6px 0 0;
+  color: var(--mute);
+  font-size: 16px;
+}
+
+.mosaic {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.mosaic .side {
+  display: grid;
+  gap: 24px;
+}
+
+/* screenshot sliders (Gallery) */
+.track {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px 10px 16px 4px;
+  scrollbar-width: thin;
+}
+
+.track figure {
+  flex: 0 0 min(78%, 600px);
+  scroll-snap-align: start;
+}
+
+.galnav {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.galnav button {
+  width: 46px;
+  height: 46px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.galnav svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.galnav button:hover {
+  background: var(--mag);
+  border-color: var(--mag);
+  color: #fff;
+}
+
+/* before/after, flows */
+.ba {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 48px);
+}
+
+.ba h3 {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pill {
+  font-size: 12px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+}
+
+.pill.m {
+  background: var(--mag);
+  border-color: var(--mag);
+  color: #fff;
+}
+
+.row3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.row3 .shot {
+  aspect-ratio: 9/19;
+  border-radius: 18px;
+  box-shadow: 5px 5px 0 var(--shadow);
+}
+
+.row3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.arrow {
+  width: 84px;
+  height: 24px;
+  display: block;
+  overflow: visible;
+}
+
+.arrow line {
+  stroke: var(--mag);
+  stroke-width: 4;
+  stroke-dasharray: 9 7;
+  stroke-linecap: round;
+}
+
+.arrow path {
+  fill: var(--mag);
+}
+
+.fix {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.fix div {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 6px 6px 0 var(--shadow);
+}
+
+.fix em {
+  display: block;
+  color: var(--brown);
+  font-style: normal;
+  font-weight: 800;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.fix b {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+
+/* about me */
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 6vw, 80px);
+}
+
+.about h2 {
+  font-size: clamp(40px, 6vw, 72px);
+}
+
+.edu {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  border-left: 4px dashed var(--brown);
+}
+
+.edu li {
+  position: relative;
+  padding: 0 0 26px 26px;
+}
+
+.edu li::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 4px solid var(--ink);
+}
+
+.edu b {
+  display: block;
+  font-size: 18px;
+}
+
+.edu span {
+  color: var(--mute);
+  font-size: 16px;
+}
+
+/* contact */
+.contact .card {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  box-shadow: 12px 12px 0 var(--shadow);
+  padding: clamp(28px, 5vw, 64px);
+  text-align: center;
+}
+
+.contact h2 {
+  font-size: clamp(42px, 7vw, 84px);
+}
+
+.contact p {
+  font-size: 19px;
+  max-width: 52ch;
+  margin: 18px auto 30px;
+  color: var(--mute);
+}
+
+.contact .cta {
+  justify-content: center;
+}
+
+.dest {
+  width: min(520px, 100%);
+  height: auto;
+  display: block;
+  margin: 0 auto 18px;
+  overflow: visible;
+}
+
+.dest .rt {
+  fill: none;
+  stroke: var(--mag);
+  stroke-width: 4;
+  stroke-dasharray: 10 8;
+  stroke-linecap: round;
+}
+
+.dest .st {
+  fill: var(--card);
+  stroke: var(--ink);
+  stroke-width: 4;
+}
+
+.dest .ow {
+  fill: var(--mag);
+}
+
+.dest .en {
+  fill: var(--card);
+  stroke: var(--mag);
+  stroke-width: 4;
+  stroke-dasharray: 5 4;
+}
+
+.dest text {
+  font:
+    800 15px Overpass,
+    sans-serif;
+  fill: var(--mag);
+}
+
+/* footer */
+footer {
+  padding: 26px max(5vw, 16px);
+  border-top: 3px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 15px;
+  color: var(--mute);
+}
+
+/* the popup for big screenshots (Lightbox) */
+dialog {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  max-width: min(1400px, 94vw);
+}
+
+dialog::backdrop {
+  background: #0d1c24e6;
+}
+
+dialog img {
+  max-height: 84vh;
+  width: auto;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+dialog p {
+  color: #fff;
+  text-align: center;
+  margin: 12px 0 0;
+}
+
+dialog button {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--mag);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* animations */
+/* moves the dashes one step (10px dash + 8px gap) along the route, over and over */
+@keyframes march {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--mag) 45%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--mag) 0%, transparent);
+  }
+}
+
+@keyframes drawin {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 500;
+  }
+
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* tablets: one column instead of two */
+@media (max-width: 980px) {
+  .ph,
+  .feature,
+  .ba,
+  .about,
+  .mosaic {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detect,
+  .fix {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* smaller laptops and tablets: the name card goes above the map */
+@media (max-width: 1100px) {
+  .hero {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .legend {
+    order: -1;
+    margin: 96px 14px 24px;
+    max-width: none;
+    box-shadow: 6px 6px 0 var(--shadow);
+  }
+
+  .map {
+    position: relative;
+    inset: auto;
+    border-top: 3px solid var(--ink);
+  }
+
+  .map {
+    height: 640px;
+  }
+
+  /* on smaller screens the route goes from top to bottom */
+  .places {
+    top: 24px;
+    bottom: 30px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .route-wide {
+    display: none;
+  }
+
+  .route-narrow {
+    display: block;
+  }
+
+  .place {
+    left: calc(var(--nx) * 1%);
+    top: calc(var(--ny) * 1%);
+  }
+
+  .place.label-left {
+    flex-direction: row;
+    text-align: left;
+    transform: translate(-12px, -50%);
+  }
+}
+
+/* phones */
+@media (max-width: 760px) {
+  .nav .links {
+    display: none;
+  }
+
+  .did {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .sheet {
+    padding-left: 56px;
+    padding-right: 16px;
+  }
+
+  .trail::before {
+    left: 26px;
+  }
+
+  .stop {
+    left: 15px;
+    width: 26px;
+    height: 26px;
+    border-width: 4px;
+  }
+
+  .flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+    justify-self: center;
+    margin: 30px 0;
+  }
+
+  .track figure {
+    flex-basis: 90%;
+  }
+
+  .theme span {
+    display: none;
+  }
+
+  .nav {
+    gap: 8px;
+    padding-left: 14px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .tblock dl div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}
+
+/* less motion for people who turned animations off */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .btn,
+  .shot {
+    transition: none;
+  }
+
+  .route-line,
+  .place,
+  .place.next i {
+    animation: none;
+  }
+}
+
+/* the route card on the left (ScrollTracker highlights the links) */
+.rail {
+  position: fixed;
+  left: 16px;
+  width: 150px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 10px;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 5px 5px 0 var(--shadow);
+}
+
+.rail .rt {
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--brown);
+  padding: 0 6px 6px;
+}
+
+.rail::before {
+  content: "";
+  position: absolute;
+  left: 21px;
+  top: 40px;
+  bottom: 24px;
+  border-left: 3px dashed var(--mag);
+}
+
+.rail a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--mute);
+  padding: 5px 8px 5px 4px;
+  border-radius: 999px;
+}
+
+.rail i {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 3px solid var(--ink);
+  flex: none;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+
+.rail i.own {
+  border-radius: 3px;
+  transform: rotate(45deg) scale(0.85);
+}
+
+.rail i.end {
+  border-style: dashed;
+  border-color: var(--mag);
+}
+
+.rail a:hover {
+  color: var(--ink);
+  background: var(--land2);
+}
+
+.rail a.on {
+  color: #fff;
+  background: var(--mag);
+}
+
+.rail a.on i {
+  background: #fff;
+  border-color: #fff;
+}
+
+/* wide screens: show the route card */
+@media (min-width: 1280px) {
+  .rail {
+    display: flex;
+  }
+
+  .trail::before {
+    left: 189px;
+  }
+
+  .sheet {
+    padding-left: 250px;
+  }
+
+  .stop {
+    left: 176px;
+  }
+
+  .legend {
+    margin-left: 190px;
+  }
+
+  .places {
+    left: 730px;
+  }
+}
